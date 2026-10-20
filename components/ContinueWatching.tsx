@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { getTitle } from "@/lib/catalog";
+import type { Title } from "@/lib/catalog";
 import PosterArt from "./PosterArt";
 import Row from "./Row";
 
@@ -27,14 +27,25 @@ export function readContinueWatching(): ContinueItem[] {
 
 export default function ContinueWatching() {
   const [items, setItems] = useState<ContinueItem[]>([]);
+  const [bySlug, setBySlug] = useState<Map<string, Title>>(new Map());
 
   useEffect(() => {
-    setItems(
-      readContinueWatching()
-        .filter((i) => getTitle(i.slug) && i.progress > 5)
-        .sort((a, b) => b.updatedAt - a.updatedAt)
-        .slice(0, 10)
-    );
+    // Titles now live in the server store (Phase 2) — resolve the stored
+    // slugs against the public slim catalogue.
+    fetch("/api/public/titles")
+      .then((r) => r.json())
+      .then((d) => {
+        const list = (d.titles ?? []) as Title[];
+        const map = new Map(list.map((t) => [t.slug, t]));
+        setBySlug(map);
+        setItems(
+          readContinueWatching()
+            .filter((i) => map.has(i.slug) && i.progress > 5)
+            .sort((a, b) => b.updatedAt - a.updatedAt)
+            .slice(0, 10)
+        );
+      })
+      .catch(() => undefined);
   }, []);
 
   if (items.length === 0) return null;
@@ -42,7 +53,7 @@ export default function ContinueWatching() {
   return (
     <Row title="Continue Watching">
       {items.map((item) => {
-        const title = getTitle(item.slug)!;
+        const title = bySlug.get(item.slug)!;
         const pct =
           item.duration > 0
             ? Math.min(100, Math.round((item.progress / item.duration) * 100))

@@ -1,13 +1,16 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// WatchDrama catalogue — ALL content on the site is driven from this file.
+// WatchDrama catalogue — types + Phase 1 sample catalogue (the SEED).
 //
-// To add your own videos, see CONTENT.md in the project root.
-// In short: upload your video file to your hosting, then paste its URL into
-// a title's `sources` list below. The `url` can be an .m3u8 (HLS) stream or
-// a direct .mp4 file.
+// Phase 2: the live catalogue lives in `data/catalog.json` and is managed
+// from the /admin panel (see lib/store.ts). The TITLES list below is only
+// used to seed that file on first run (and by scripts/seed-catalog.mjs) —
+// editing TITLES does NOT change the live site any more.
+//
+// To add your own videos, see CONTENT.md. In short: upload to your hosting,
+// then paste the .m3u8 / .mp4 URL into the title's sources in /admin.
 //
 // ⚠️ The streams marked SAMPLE below are public test streams (Mux / Apple /
-// Google sample bucket). They exist only to demo the player. Replace them
+// ExoPlayer test media). They exist only to demo the player. Replace them
 // with your own hosted files before launch.
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -50,6 +53,12 @@ export interface Title {
   year: number;
   rating: number; // 0–10
   language: string; // badge text, e.g. "Turkish", "English", "Korean"
+  /** Optional runtime/duration label, e.g. "1h 52m" or "45 min/ep" */
+  duration?: string;
+  /** Optional real poster image URL. Empty → procedural PosterArt is used. */
+  posterUrl?: string;
+  /** Optional real backdrop image URL (wide). Empty → procedural PosterArt. */
+  backdropUrl?: string;
   /** Category slugs this title appears under — see CATEGORIES below */
   categories: string[];
   genres: string[];
@@ -540,14 +549,16 @@ export const TITLES: Title[] = [
 ];
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
-export function getTitle(slug: string): Title | undefined {
-  return TITLES.find((t) => t.slug === slug);
+// Phase 2: these are pure functions over a titles array — the array now
+// comes from the server-side store (lib/store.ts), not from TITLES directly.
+export function getTitle(titles: Title[], slug: string): Title | undefined {
+  return titles.find((t) => t.slug === slug);
 }
 
-export function titlesIn(categorySlug: string): Title[] {
-  if (categorySlug === "movies") return TITLES.filter((t) => t.type === "movie");
-  if (categorySlug === "series") return TITLES.filter((t) => t.type === "series");
-  return TITLES.filter((t) => t.categories.includes(categorySlug));
+export function titlesIn(titles: Title[], categorySlug: string): Title[] {
+  if (categorySlug === "movies") return titles.filter((t) => t.type === "movie");
+  if (categorySlug === "series") return titles.filter((t) => t.type === "series");
+  return titles.filter((t) => t.categories.includes(categorySlug));
 }
 
 export function getCategory(slug: string): Category | undefined {
@@ -570,10 +581,10 @@ export function firstEpisodeNumber(title: Title): number | undefined {
   return title.seasons[0]?.episodes[0]?.number;
 }
 
-export function searchTitles(query: string): Title[] {
+export function searchTitles(titles: Title[], query: string): Title[] {
   const q = query.trim().toLowerCase();
   if (!q) return [];
-  return TITLES.filter(
+  return titles.filter(
     (t) =>
       t.name.toLowerCase().includes(q) ||
       t.genres.some((g) => g.toLowerCase().includes(q)) ||
@@ -582,8 +593,8 @@ export function searchTitles(query: string): Title[] {
   );
 }
 
-export function suggestedTitles(title: Title, count = 8): Title[] {
-  return TITLES.filter(
+export function suggestedTitles(titles: Title[], title: Title, count = 8): Title[] {
+  return titles.filter(
     (t) =>
       t.slug !== title.slug &&
       t.categories.some((c) => title.categories.includes(c))

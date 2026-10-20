@@ -23,15 +23,34 @@ function hashSlug(slug: string): number {
   return h;
 }
 
+/** The fields PosterArt needs — lets slim API results be passed too. */
+export type PosterArtTitle = Pick<
+  Title,
+  "slug" | "name" | "genres" | "language" | "posterUrl" | "backdropUrl"
+>;
+
 export default function PosterArt({
   title,
   wide = false,
   className = "",
 }: {
-  title: Title;
+  title: PosterArtTitle;
   wide?: boolean;
   className?: string;
 }) {
+  // Real artwork wins when the admin has set one (Phase 2).
+  const imageUrl = wide ? title.backdropUrl : title.posterUrl;
+  if (imageUrl) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={imageUrl}
+        alt={title.name}
+        className={`object-cover ${className}`}
+        loading="lazy"
+      />
+    );
+  }
   const h = hashSlug(title.slug);
   const [c1, c2, c3] = PALETTES[h % PALETTES.length];
   const angle = 120 + (h % 80);

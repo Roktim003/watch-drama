@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { searchTitles } from "@/lib/catalog";
+import { searchTitles, type Title } from "@/lib/catalog";
 import PosterArt from "./PosterArt";
 
 const NAV = [
@@ -23,7 +23,18 @@ export default function Header() {
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
-  const results = useMemo(() => searchTitles(query).slice(0, 8), [query]);
+  // Live search runs against the store via the public API (Phase 2) —
+  // fetch the slim catalogue once when the overlay is first opened.
+  const [slimTitles, setSlimTitles] = useState<Title[]>([]);
+  useEffect(() => {
+    if (!searchOpen || slimTitles.length > 0) return;
+    fetch("/api/public/titles")
+      .then((r) => r.json())
+      .then((d) => setSlimTitles((d.titles ?? []) as Title[]))
+      .catch(() => undefined);
+  }, [searchOpen, slimTitles.length]);
+
+  const results = searchTitles(slimTitles, query).slice(0, 8);
 
   useEffect(() => {
     if (searchOpen) inputRef.current?.focus();
