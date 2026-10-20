@@ -29,6 +29,8 @@ npm run start
 | `/title/[slug]` | Title detail: metadata, synopsis, seasons/episodes, suggestions |
 | `/watch/[slug]/[episode]` | Player page |
 | `/admin` | **Admin panel (Phase 2)** — login required |
+| `/login`, `/signup` | **Viewer accounts (Phase 3)** |
+| `/my-list` | Watchlist, bookings, continue watching (Phase 3) — login required |
 
 **Player features:** HLS (`.m3u8`) via hls.js + direct `.mp4`, multiple named
 sources ("servers") per episode with a switcher, HLS quality-level selector,
@@ -96,12 +98,59 @@ Apple BipBop HLS, an ExoPlayer test-media MP4 — all reachability-verified;
 the classic Google sample-bucket MP4 returned 403 in testing, so it is not
 used) — replace them with your hosted files before launch.
 
+## Phase 3 — Viewer accounts & synced lists
+
+Browsing and watching are **always free with no account** (like MovieBox).
+An account is only for syncing personal lists across devices.
+
+- **Accounts:** `/signup` + `/login` (name, email, password ≥ 8 chars).
+  Passwords are hashed with **scrypt** (Node built-in crypto, per-user
+  random salt) — plaintext passwords are never stored. There is **no
+  email verification and no password reset** in Phase 3; if a viewer
+  forgets their password, an admin can delete their record from
+  `data/users.json` and they sign up again.
+- **Data:** accounts live in **`data/users.json`** (same JSON-store
+  pattern as the catalogue; seeded empty on first run). **Back it up**
+  together with `data/catalog.json`. Each record holds the viewer's
+  watchlist (title slugs), bookings (coming-soon slugs) and progress
+  (`{ [slug]: { episode, position, duration, updatedAt } }`).
+- **Sessions:** a separate httpOnly cookie `wd_user` (the admin cookie is
+  `wd_admin` — **admin and viewer accounts are completely separate**;
+  the admin password does not log you in as a viewer and vice versa).
+  The token is an HMAC-signed payload with a 30-day expiry, signed with
+  `USER_SESSION_SECRET` (see `.env.example`). `/my-list` is protected in
+  `proxy.ts` before rendering, so logged-out visitors get a clean
+  redirect to `/login` with no user data in the response.
+- **What syncs:** the "+ My List" button on title pages, Book buttons,
+  and playback progress. The player keeps saving to localStorage and,
+  when logged in, also posts progress to the server (fire-and-forget);
+  on the watch page, the newer of local/server progress wins.
+- **Guest → account merge:** right after login/signup, whatever the
+  guest had in this browser (localStorage `wd-watchlist`, `wd-booked`,
+  `wd-continue`) is merged into the account — union for lists; for
+  progress, the entry with the newer timestamp wins per title — and
+  localStorage is rewritten from the merged account state.
+- **Sync API design:** `GET /api/user/lists` returns all three lists.
+  `PUT /api/user/watchlist` / `PUT /api/user/bookings` replace a whole
+  list with `{ slugs: string[] }` (used by the merge); `POST` on the
+  same paths toggles one title with `{ slug }` (used by the buttons).
+  `POST /api/user/progress` upserts `{ slug, episode, position,
+  duration }`; `DELETE /api/user/progress` removes one entry. All of
+  them require the viewer session (401 otherwise) and validate that
+  slugs exist in the catalogue (400 for unknown slugs).
+  Auth API: `POST /api/auth/signup` (201), `POST /api/auth/login`,
+  `POST /api/auth/logout`, `GET /api/auth/me`.
+
 ## Known limitations
 
-- **JSON store, single process:** fine for one server and one admin.
-  Concurrent admin edits are serialized in-process, but running multiple
-  server instances against the same file is NOT safe. For that, move the
-  store to a real database (the `lib/store.ts` interface is the seam).
-- No public user accounts, watchlists are per-browser (localStorage).
+- **JSON stores, single process:** fine for one server. Writes are
+  serialized in-process, but running multiple server instances against
+  the same files is NOT safe. For that, move the stores to a real
+  database (the `lib/store.ts` / `lib/users.ts` interfaces are the seam).
+- Viewer accounts (Phase 3): single shared JSON store, no email
+  verification, no password reset, no social login, no per-session
+  revocation (changing `USER_SESSION_SECRET`/`ADMIN_PASSWORD` logs all
+  viewers out). Guest lists live in localStorage and only merge into an
+  account in the browser where the guest data exists.
 - `proxy.ts` reads `data/catalog.json` to return real 404s for unknown
   title/watch URLs (streamed pages in Next 16 otherwise soft-404 with 200).

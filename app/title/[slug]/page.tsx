@@ -9,6 +9,7 @@ import PosterArt from "@/components/PosterArt";
 import Row from "@/components/Row";
 import TitleCard from "@/components/TitleCard";
 import BookButton from "@/components/BookButton";
+import WatchlistButton from "@/components/WatchlistButton";
 
 export async function generateMetadata({
   params,
@@ -69,18 +70,24 @@ export default async function TitlePage({
             </p>
             <div className="mt-5 flex flex-wrap items-start gap-3">
               {firstEp !== undefined ? (
-                <Link
-                  href={`/watch/${title.slug}/${firstEp}`}
-                  className="rounded-lg bg-red-600 px-6 py-3 font-bold text-white hover:bg-red-500"
-                >
-                  ▶ Watch Episode {firstEp}
-                </Link>
+                <>
+                  <Link
+                    href={`/watch/${title.slug}/${firstEp}`}
+                    className="rounded-lg bg-red-600 px-6 py-3 font-bold text-white hover:bg-red-500"
+                  >
+                    ▶ Watch Episode {firstEp}
+                  </Link>
+                  <WatchlistButton slug={title.slug} />
+                </>
               ) : (
                 <div className="w-56">
                   <span className="block rounded-lg bg-white/10 px-5 py-3 text-center font-bold text-white">
                     Coming {title.releaseDate ?? "Soon"}
                   </span>
                   <BookButton slug={title.slug} baseCount={title.bookedCount ?? 0} />
+                  <div className="mt-2 [&>button]:w-full">
+                    <WatchlistButton slug={title.slug} />
+                  </div>
                 </div>
               )}
             </div>

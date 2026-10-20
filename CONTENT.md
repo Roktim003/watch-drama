@@ -4,6 +4,13 @@
 titles, episodes, video links, subtitles — is managed in the **admin
 panel** in your browser.
 
+> **Admin ≠ viewer accounts (Phase 3):** the admin panel (`/admin`, one
+> password) is only for you, the site owner. Viewers can optionally
+> create their own free accounts (`/signup`) to sync a personal watchlist
+> and viewing progress — those accounts have nothing to do with the
+> admin panel and can't change any content. Watching never requires an
+> account.
+
 ---
 
 ## Step 0 — Log in to the admin panel

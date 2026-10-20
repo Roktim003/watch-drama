@@ -28,6 +28,44 @@ function isAuthed(request: NextRequest): boolean {
   return a.length === b.length && timingSafeEqual(a, b);
 }
 
+// ── Viewer session check for /my-list (Phase 3) ─────────────────────────────
+// Same token format as lib/userAuth.ts: base64url(JSON {uid, exp}) + "." +
+// HMAC-SHA256(secret, payload). Verified here, BEFORE rendering, so no
+// user data is ever streamed to a logged-out visitor (the Phase 2 lesson).
+const USER_COOKIE = "wd_user";
+
+function userSessionSecret(): string {
+  return (
+    process.env.USER_SESSION_SECRET ||
+    process.env.ADMIN_PASSWORD ||
+    "watchdrama-user-session-dev-secret-v1"
+  );
+}
+
+function hasValidUserSession(request: NextRequest): boolean {
+  const value = request.cookies.get(USER_COOKIE)?.value;
+  if (!value) return false;
+  const dot = value.lastIndexOf(".");
+  if (dot <= 0) return false;
+  const payload = value.slice(0, dot);
+  const signature = value.slice(dot + 1);
+  const expected = createHmac("sha256", userSessionSecret())
+    .update(payload)
+    .digest("base64url");
+  const a = Buffer.from(signature);
+  const b = Buffer.from(expected);
+  if (a.length !== b.length || !timingSafeEqual(a, b)) return false;
+  try {
+    const data = JSON.parse(Buffer.from(payload, "base64url").toString("utf8")) as {
+      uid?: string;
+      exp?: number;
+    };
+    return !!data.uid && !!data.exp && Date.now() <= data.exp;
+  } catch {
+    return false;
+  }
+}
+
 // ── Real 404s for title/watch pages ─────────────────────────────────────────
 // With Cache Components (PPR), a notFound() thrown inside a streamed page
 // is served with HTTP 200. To give missing titles a true 404 status, the
@@ -80,6 +118,17 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // /my-list is a viewer page (Phase 3): valid user session or a clean
+  // redirect to /login — returned before anything renders, so the body
+  // contains zero user data.
+  if (pathname === "/my-list" || pathname.startsWith("/my-list/")) {
+    if (hasValidUserSession(request)) return NextResponse.next();
+    const url = request.nextUrl.clone();
+    url.pathname = "/login";
+    url.search = "?next=/my-list";
+    return NextResponse.redirect(url);
+  }
+
   // Login/logout endpoints and the login page stay reachable.
   if (
     pathname === "/api/admin/login" ||
@@ -106,5 +155,7 @@ export const config = {
     "/api/admin/:path*",
     "/title/:path*",
     "/watch/:path*",
+    "/my-list",
+    "/my-list/:path*",
   ],
 };
