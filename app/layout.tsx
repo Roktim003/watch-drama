@@ -22,9 +22,9 @@ export default function RootLayout({
               Watch<span className="text-red-500">Drama</span>
             </p>
             <p className="mt-2 max-w-xl">
-              Phase 1 demo build. All sample streams are public test streams —
-              the site owner replaces them with their own hosted video files
-              (see CONTENT.md in the project).
+              All sample streams are public test streams — the site owner
+              replaces them with their own hosted video files through the
+              admin panel (see CONTENT.md in the project).
             </p>
             <p className="mt-3 text-xs">© 2026 WatchDrama. For demo purposes.</p>
           </div>

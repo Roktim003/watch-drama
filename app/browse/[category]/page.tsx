@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
-import { CATEGORIES, getCategory, titlesIn } from "@/lib/catalog";
-import TitleCard from "@/components/TitleCard";
 
-export function generateStaticParams() {
-  return CATEGORIES.map((c) => ({ category: c.slug }));
-}
+export const instant = false;
+import { connection } from "next/server";
+import { getCategory, titlesIn } from "@/lib/catalog";
+import { getTitles } from "@/lib/store";
+import TitleCard from "@/components/TitleCard";
 
 export async function generateMetadata({
   params,
@@ -21,10 +21,11 @@ export default async function BrowsePage({
 }: {
   params: Promise<{ category: string }>;
 }) {
+  await connection();
   const { category } = await params;
   const cat = getCategory(category);
   if (!cat) notFound();
-  const items = titlesIn(category);
+  const items = titlesIn(await getTitles(), category);
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6">

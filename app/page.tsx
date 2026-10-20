@@ -1,10 +1,13 @@
 import Link from "next/link";
+
+export const instant = false; // store-driven page: render per request
+import { connection } from "next/server";
 import {
-  TITLES,
   firstEpisodeNumber,
   titlesIn,
   type Title,
 } from "@/lib/catalog";
+import { getTitles } from "@/lib/store";
 import PosterArt from "@/components/PosterArt";
 import Row from "@/components/Row";
 import TitleCard from "@/components/TitleCard";
@@ -57,27 +60,30 @@ function Hero({ title }: { title: Title }) {
   );
 }
 
-const ROWS: Array<{ title: string; href: string; items: Title[] }> = [
-  {
-    title: "Trending Now",
-    href: "/browse/series",
-    items: TITLES.filter((t) => t.trending),
-  },
-  { title: "Turkish Drama", href: "/browse/turkish-drama", items: titlesIn("turkish-drama").filter((t) => !t.comingSoon) },
-  { title: "K-Drama", href: "/browse/k-drama", items: titlesIn("k-drama").filter((t) => !t.comingSoon) },
-  { title: "C-Drama", href: "/browse/c-drama", items: titlesIn("c-drama") },
-  { title: "Anime", href: "/browse/anime", items: titlesIn("anime").filter((t) => !t.comingSoon) },
-  { title: "Action Movies", href: "/browse/action-movies", items: titlesIn("action-movies") },
-  { title: "🔥 Hot Short TV", href: "/browse/hot-short-tv", items: titlesIn("hot-short-tv").filter((t) => !t.comingSoon) },
-  { title: "Romance", href: "/browse/romance", items: titlesIn("romance").filter((t) => !t.comingSoon) },
-  { title: "Coming Soon", href: "/browse/coming-soon", items: titlesIn("coming-soon") },
-];
+export default async function Home() {
+  await connection(); // catalogue comes from the JSON store — render per request
+  const TITLES = await getTitles();
 
-export default function Home() {
+  const ROWS: Array<{ title: string; href: string; items: Title[] }> = [
+    {
+      title: "Trending Now",
+      href: "/browse/series",
+      items: TITLES.filter((t) => t.trending),
+    },
+    { title: "Turkish Drama", href: "/browse/turkish-drama", items: titlesIn(TITLES, "turkish-drama").filter((t) => !t.comingSoon) },
+    { title: "K-Drama", href: "/browse/k-drama", items: titlesIn(TITLES, "k-drama").filter((t) => !t.comingSoon) },
+    { title: "C-Drama", href: "/browse/c-drama", items: titlesIn(TITLES, "c-drama") },
+    { title: "Anime", href: "/browse/anime", items: titlesIn(TITLES, "anime").filter((t) => !t.comingSoon) },
+    { title: "Action Movies", href: "/browse/action-movies", items: titlesIn(TITLES, "action-movies") },
+    { title: "🔥 Hot Short TV", href: "/browse/hot-short-tv", items: titlesIn(TITLES, "hot-short-tv").filter((t) => !t.comingSoon) },
+    { title: "Romance", href: "/browse/romance", items: titlesIn(TITLES, "romance").filter((t) => !t.comingSoon) },
+    { title: "Coming Soon", href: "/browse/coming-soon", items: titlesIn(TITLES, "coming-soon") },
+  ];
+
   const featured = TITLES.find((t) => t.featured) ?? TITLES[0];
   return (
     <div className="pb-14">
-      <Hero title={featured} />
+      {featured && <Hero title={featured} />}
       <div className="mt-8 flex flex-col gap-9">
         <ContinueWatching />
         {ROWS.filter((r) => r.items.length > 0).map((row) => (

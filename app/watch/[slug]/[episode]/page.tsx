@@ -1,15 +1,11 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { TITLES, findEpisode, getTitle } from "@/lib/catalog";
-import Player from "@/components/Player";
 
-export function generateStaticParams() {
-  return TITLES.flatMap((t) =>
-    t.seasons.flatMap((s) =>
-      s.episodes.map((e) => ({ slug: t.slug, episode: String(e.number) }))
-    )
-  );
-}
+export const instant = false;
+import { notFound } from "next/navigation";
+import { headers } from "next/headers";
+import { findEpisode } from "@/lib/catalog";
+import { getTitle } from "@/lib/store";
+import Player from "@/components/Player";
 
 export async function generateMetadata({
   params,
@@ -17,7 +13,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string; episode: string }>;
 }) {
   const { slug, episode } = await params;
-  const title = getTitle(slug);
+  const title = await getTitle(slug);
   return {
     title: title
       ? `Watch ${title.name} Episode ${episode} — WatchDrama`
@@ -30,8 +26,9 @@ export default async function WatchPage({
 }: {
   params: Promise<{ slug: string; episode: string }>;
 }) {
+  await headers(); // fully dynamic route → missing titles return a real 404
   const { slug, episode: episodeParam } = await params;
-  const title = getTitle(slug);
+  const title = await getTitle(slug);
   if (!title) notFound();
   const episodeNumber = Number.parseInt(episodeParam, 10);
   if (Number.isNaN(episodeNumber)) notFound();

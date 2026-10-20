@@ -1,14 +1,14 @@
 import Link from "next/link";
+
+export const instant = false;
 import { notFound } from "next/navigation";
-import { TITLES, firstEpisodeNumber, getTitle, suggestedTitles } from "@/lib/catalog";
+import { headers } from "next/headers";
+import { firstEpisodeNumber, getTitle, suggestedTitles } from "@/lib/catalog";
+import { getTitle as getStoredTitle, getTitles } from "@/lib/store";
 import PosterArt from "@/components/PosterArt";
 import Row from "@/components/Row";
 import TitleCard from "@/components/TitleCard";
 import BookButton from "@/components/BookButton";
-
-export function generateStaticParams() {
-  return TITLES.map((t) => ({ slug: t.slug }));
-}
 
 export async function generateMetadata({
   params,
@@ -16,7 +16,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const title = getTitle(slug);
+  const title = await getStoredTitle(slug);
   return { title: title ? `${title.name} — WatchDrama` : "Title — WatchDrama" };
 }
 
@@ -25,12 +25,14 @@ export default async function TitlePage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  await headers(); // fully dynamic route → missing titles return a real 404
   const { slug } = await params;
-  const title = getTitle(slug);
+  const all = await getTitles();
+  const title = getTitle(all, slug);
   if (!title) notFound();
 
   const firstEp = firstEpisodeNumber(title);
-  const suggested = suggestedTitles(title);
+  const suggested = suggestedTitles(all, title);
 
   return (
     <div className="pb-14">
@@ -58,6 +60,7 @@ export default async function TitlePage({
                 {title.type === "short" ? "Short Drama" : title.type}
               </span>
               <span>{title.genres.join(" · ")}</span>
+              {title.duration && <span>{title.duration}</span>}
             </p>
             <p className="mt-4 max-w-2xl leading-relaxed text-zinc-300">{title.synopsis}</p>
             <p className="mt-3 text-sm text-zinc-500">

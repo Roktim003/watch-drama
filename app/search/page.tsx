@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { searchTitles } from "@/lib/catalog";
+import { getTitles } from "@/lib/store";
 import TitleCard from "@/components/TitleCard";
 
 export const metadata = { title: "Search — WatchDrama" };
@@ -23,7 +24,7 @@ async function SearchResults({
   searchParams: Promise<{ q?: string }>;
 }) {
   const { q = "" } = await searchParams;
-  const results = searchTitles(q);
+  const results = searchTitles(await getTitles(), q);
 
   return (
     <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6">
