@@ -10,7 +10,10 @@ import PosterArt from "@/components/PosterArt";
 import TitleCard from "@/components/TitleCard";
 import { ClearProgressButton, RemoveSlugButton } from "@/components/MyListActions";
 
-export const metadata = { title: "My List — WatchDrama" };
+export const metadata = {
+  title: "My List",
+  description: "Your WatchDrama watchlist, bookings and continue-watching progress, synced with your account.",
+};
 
 export default async function MyListPage() {
   await headers(); // fully dynamic → per-request auth check

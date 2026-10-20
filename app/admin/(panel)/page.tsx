@@ -3,7 +3,7 @@ import { connection } from "next/server";
 import { getTitles } from "@/lib/store";
 import ImportExport from "@/components/admin/ImportExport";
 
-export const metadata = { title: "Admin Dashboard — WatchDrama" };
+export const metadata = { title: { absolute: "Admin Dashboard — WatchDrama" } };
 
 export default async function AdminDashboard() {
   await connection();
@@ -36,8 +36,10 @@ export default async function AdminDashboard() {
         <h1 className="text-2xl font-bold text-white">Dashboard</h1>
         <p className="mt-1 text-sm text-zinc-400">
           Everything on the public site is driven by this catalogue, stored in{" "}
-          <code className="text-zinc-300">data/catalog.json</code>. Changes go
-          live immediately — no rebuild needed.
+          <code className="text-zinc-300">catalog.json</code> in the data
+          directory (<code className="text-zinc-300">$DATA_DIR</code> when
+          set, otherwise <code className="text-zinc-300">data/</code>).
+          Changes go live immediately — no rebuild needed.
         </p>
       </div>
 

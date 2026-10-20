@@ -1,10 +1,13 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // WatchDrama — server-side catalogue store (Phase 2).
 //
-// The catalogue lives in `data/catalog.json` in the project root. On first
-// run (file missing) it is seeded from the Phase 1 sample catalogue in
-// lib/catalog.ts (TITLES). All public pages and the admin panel read/write
-// through this module — never import it from client components.
+// The catalogue lives in `catalog.json` inside the data directory (see
+// lib/dataDir.ts: $DATA_DIR when set, otherwise ./data in the project
+// root — Phase 4). On first run (file missing) it is seeded from the
+// bundled defaults shipped with the app (the repo's data/catalog.json,
+// which mirrors the Phase 1 sample catalogue in lib/catalog.ts), falling
+// back to TITLES directly. All public pages and the admin panel
+// read/write through this module — never import it from client components.
 //
 // Writes are "atomic-ish": serialize to a temp file in the same directory,
 // then rename over the target, so a crash mid-write can't corrupt the file.
@@ -17,9 +20,9 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { TITLES, type Title } from "./catalog";
+import { bundledDataDir, dataDir, dataFile } from "./dataDir";
 
-const DATA_DIR = path.join(process.cwd(), "data");
-const DATA_FILE = path.join(DATA_DIR, "catalog.json");
+const DATA_FILE = dataFile("catalog.json");
 
 interface Cache {
   titles: Title[];
@@ -33,10 +36,26 @@ async function ensureSeeded(): Promise<void> {
   try {
     await fs.access(DATA_FILE);
   } catch {
-    await fs.mkdir(DATA_DIR, { recursive: true });
-    const tmp = `${DATA_FILE}.tmp-${process.pid}`;
-    await fs.writeFile(tmp, JSON.stringify(TITLES, null, 2) + "\n", "utf8");
-    await fs.rename(tmp, DATA_FILE);
+    await fs.mkdir(dataDir(), { recursive: true });
+    // Prefer the bundled seed file shipped with the app (Phase 4: this is
+    // how a fresh Docker volume / DATA_DIR gets the default catalogue).
+    // When DATA_DIR is unset, DATA_FILE *is* the bundled file, so the copy
+    // is skipped and we fall through to the TITLES constant as before.
+    const bundled = path.join(bundledDataDir(), "catalog.json");
+    let seeded = false;
+    if (bundled !== DATA_FILE) {
+      try {
+        await fs.copyFile(bundled, DATA_FILE);
+        seeded = true;
+      } catch {
+        seeded = false;
+      }
+    }
+    if (!seeded) {
+      const tmp = `${DATA_FILE}.tmp-${process.pid}`;
+      await fs.writeFile(tmp, JSON.stringify(TITLES, null, 2) + "\n", "utf8");
+      await fs.rename(tmp, DATA_FILE);
+    }
     cache = null;
   }
 }
@@ -50,7 +69,7 @@ export async function getTitles(): Promise<Title[]> {
   const parsed = JSON.parse(raw);
   const titles: Title[] = Array.isArray(parsed) ? parsed : parsed.titles;
   if (!Array.isArray(titles)) {
-    throw new Error("data/catalog.json is corrupted: expected an array of titles");
+    throw new Error("catalog.json is corrupted: expected an array of titles");
   }
   cache = { titles, mtimeMs: stat.mtimeMs };
   return titles;
@@ -62,7 +81,7 @@ export async function getTitle(slug: string): Promise<Title | undefined> {
 }
 
 async function persist(titles: Title[]): Promise<void> {
-  await fs.mkdir(DATA_DIR, { recursive: true });
+  await fs.mkdir(dataDir(), { recursive: true });
   const tmp = `${DATA_FILE}.tmp-${process.pid}-${Date.now()}`;
   await fs.writeFile(tmp, JSON.stringify(titles, null, 2) + "\n", "utf8");
   await fs.rename(tmp, DATA_FILE);

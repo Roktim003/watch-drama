@@ -5,7 +5,7 @@ import { connection } from "next/server";
 import { getTitle } from "@/lib/store";
 import TitleForm from "@/components/admin/TitleForm";
 
-export const metadata = { title: "Edit Title — WatchDrama Admin" };
+export const metadata = { title: { absolute: "Edit Title — WatchDrama Admin" } };
 
 export default async function EditTitlePage({
   params,

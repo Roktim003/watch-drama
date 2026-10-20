@@ -1,6 +1,6 @@
 import TitleForm from "@/components/admin/TitleForm";
 
-export const metadata = { title: "New Title — WatchDrama Admin" };
+export const metadata = { title: { absolute: "New Title — WatchDrama Admin" } };
 
 export default function NewTitlePage() {
   return (

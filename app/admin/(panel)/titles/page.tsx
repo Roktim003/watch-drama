@@ -3,7 +3,7 @@ import { connection } from "next/server";
 import { getTitles } from "@/lib/store";
 import TitlesTable from "@/components/admin/TitlesTable";
 
-export const metadata = { title: "Titles — WatchDrama Admin" };
+export const metadata = { title: { absolute: "Titles — WatchDrama Admin" } };
 
 export default async function AdminTitlesPage() {
   await connection();
