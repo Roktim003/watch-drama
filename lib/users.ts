@@ -1,12 +1,15 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // WatchDrama — viewer user store (Phase 3).
 //
-// Viewer accounts live in `data/users.json` in the project root, using the
-// same JSON-store pattern as the catalogue (lib/store.ts): seeded empty on
-// first run, writes go to a temp file then rename over the target, and all
-// mutations are funnelled through a promise chain so concurrent requests
-// in this process can't interleave. Single-process store — NOT safe for
-// multi-instance deployments; move to a real database for that.
+// Viewer accounts live in `users.json` inside the data directory (see
+// lib/dataDir.ts: $DATA_DIR when set, otherwise ./data in the project
+// root — Phase 4), using the same JSON-store pattern as the catalogue
+// (lib/store.ts): seeded on first run (from the bundled users.json shipped
+// with the app, or empty), writes go to a temp file then rename over the
+// target, and all mutations are funnelled through a promise chain so
+// concurrent requests in this process can't interleave. Single-process
+// store — NOT safe for multi-instance deployments; move to a real
+// database for that.
 //
 // Passwords are NEVER stored in plaintext. Each user gets a random salt
 // and the stored `passwordHash` is scrypt(password, salt) using Node's
@@ -16,9 +19,9 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { randomBytes, randomUUID, scryptSync, timingSafeEqual } from "crypto";
+import { bundledDataDir, dataDir, dataFile } from "./dataDir";
 
-const DATA_DIR = path.join(process.cwd(), "data");
-const DATA_FILE = path.join(DATA_DIR, "users.json");
+const DATA_FILE = dataFile("users.json");
 
 export interface UserProgress {
   episode: number;
@@ -86,10 +89,24 @@ async function ensureSeeded(): Promise<void> {
   try {
     await fs.access(DATA_FILE);
   } catch {
-    await fs.mkdir(DATA_DIR, { recursive: true });
-    const tmp = `${DATA_FILE}.tmp-${process.pid}`;
-    await fs.writeFile(tmp, "[]\n", "utf8");
-    await fs.rename(tmp, DATA_FILE);
+    await fs.mkdir(dataDir(), { recursive: true });
+    // Seed from the bundled users.json shipped with the app when seeding a
+    // fresh DATA_DIR (Phase 4); otherwise start empty, as before.
+    const bundled = path.join(bundledDataDir(), "users.json");
+    let seeded = false;
+    if (bundled !== DATA_FILE) {
+      try {
+        await fs.copyFile(bundled, DATA_FILE);
+        seeded = true;
+      } catch {
+        seeded = false;
+      }
+    }
+    if (!seeded) {
+      const tmp = `${DATA_FILE}.tmp-${process.pid}`;
+      await fs.writeFile(tmp, "[]\n", "utf8");
+      await fs.rename(tmp, DATA_FILE);
+    }
     cache = null;
   }
 }
@@ -102,7 +119,7 @@ export async function getUsers(): Promise<User[]> {
   const parsed = JSON.parse(raw);
   const users: User[] = Array.isArray(parsed) ? parsed : parsed.users;
   if (!Array.isArray(users)) {
-    throw new Error("data/users.json is corrupted: expected an array of users");
+    throw new Error("users.json is corrupted: expected an array of users");
   }
   cache = { users, mtimeMs: stat.mtimeMs };
   return users;
@@ -119,7 +136,7 @@ export async function getUserById(id: string): Promise<User | undefined> {
 }
 
 async function persist(users: User[]): Promise<void> {
-  await fs.mkdir(DATA_DIR, { recursive: true });
+  await fs.mkdir(dataDir(), { recursive: true });
   const tmp = `${DATA_FILE}.tmp-${process.pid}-${Date.now()}`;
   await fs.writeFile(tmp, JSON.stringify(users, null, 2) + "\n", "utf8");
   await fs.rename(tmp, DATA_FILE);
