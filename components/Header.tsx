@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { searchTitles, type Title } from "@/lib/catalog";
 import PosterArt from "./PosterArt";
+import { useUser } from "./useUser";
 
 const NAV = [
   { label: "Home", href: "/" },
@@ -17,6 +18,8 @@ const NAV = [
 ];
 
 export default function Header() {
+  const { user, loading, logout } = useUser();
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -75,6 +78,67 @@ export default function Header() {
             ))}
           </nav>
           <div className="ml-auto flex items-center gap-2">
+            {!loading && !user && (
+              <span className="hidden items-center gap-2 sm:flex">
+                <Link
+                  href="/login"
+                  className="rounded-full px-3 py-1.5 text-sm font-semibold text-zinc-200 hover:bg-white/10 hover:text-white"
+                >
+                  Sign in
+                </Link>
+                <Link
+                  href="/signup"
+                  className="rounded-full bg-red-600 px-3.5 py-1.5 text-sm font-bold text-white hover:bg-red-500"
+                >
+                  Sign up
+                </Link>
+              </span>
+            )}
+            {!loading && user && (
+              <span className="relative hidden sm:block">
+                <button
+                  onClick={() => setUserMenuOpen((v) => !v)}
+                  className="flex items-center gap-2 rounded-full bg-white/10 py-1 pl-1 pr-3 text-sm font-semibold text-white hover:bg-white/20"
+                  aria-haspopup="menu"
+                  aria-expanded={userMenuOpen}
+                >
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-red-600 text-xs font-black uppercase">
+                    {user.name.slice(0, 1)}
+                  </span>
+                  <span className="max-w-[110px] truncate">{user.name}</span>
+                </button>
+                {userMenuOpen && (
+                  <span
+                    className="absolute right-0 top-11 z-50 block w-44 overflow-hidden rounded-xl bg-zinc-900 py-1 ring-1 ring-white/15"
+                    role="menu"
+                  >
+                    <Link
+                      href="/my-list"
+                      onClick={() => setUserMenuOpen(false)}
+                      className="block px-4 py-2 text-sm text-zinc-200 hover:bg-white/5"
+                    >
+                      My List
+                    </Link>
+                    <Link
+                      href="/my-list#history"
+                      onClick={() => setUserMenuOpen(false)}
+                      className="block px-4 py-2 text-sm text-zinc-200 hover:bg-white/5"
+                    >
+                      History
+                    </Link>
+                    <button
+                      onClick={() => {
+                        setUserMenuOpen(false);
+                        void logout().then(() => router.push("/"));
+                      }}
+                      className="block w-full px-4 py-2 text-left text-sm text-red-400 hover:bg-white/5"
+                    >
+                      Logout
+                    </button>
+                  </span>
+                )}
+              </span>
+            )}
             <button
               onClick={() => setSearchOpen(true)}
               aria-label="Search"
@@ -106,6 +170,56 @@ export default function Header() {
                 {item.label}
               </Link>
             ))}
+            <div className="mt-2 border-t border-white/10 pt-2">
+              {!loading && !user && (
+                <>
+                  <Link
+                    href="/login"
+                    onClick={() => setMenuOpen(false)}
+                    className="block py-2 text-sm font-semibold text-zinc-100"
+                  >
+                    Sign in
+                  </Link>
+                  <Link
+                    href="/signup"
+                    onClick={() => setMenuOpen(false)}
+                    className="block py-2 text-sm font-semibold text-red-400"
+                  >
+                    Sign up
+                  </Link>
+                </>
+              )}
+              {!loading && user && (
+                <>
+                  <p className="py-1 text-xs text-zinc-500">
+                    Signed in as <span className="font-semibold text-zinc-300">{user.name}</span>
+                  </p>
+                  <Link
+                    href="/my-list"
+                    onClick={() => setMenuOpen(false)}
+                    className="block py-2 text-sm font-semibold text-zinc-100"
+                  >
+                    My List
+                  </Link>
+                  <Link
+                    href="/my-list#history"
+                    onClick={() => setMenuOpen(false)}
+                    className="block py-2 text-sm font-semibold text-zinc-100"
+                  >
+                    History
+                  </Link>
+                  <button
+                    onClick={() => {
+                      setMenuOpen(false);
+                      void logout().then(() => router.push("/"));
+                    }}
+                    className="block py-2 text-left text-sm font-semibold text-red-400"
+                  >
+                    Logout
+                  </button>
+                </>
+              )}
+            </div>
           </nav>
         )}
       </header>

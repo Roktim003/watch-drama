@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Hls from "hls.js";
 import type { Episode } from "@/lib/catalog";
 import type { ContinueItem } from "./ContinueWatching";
+import { fetchServerLists, syncProgressRemote } from "@/lib/clientLists";
 
 const CONTINUE_KEY = "wd-continue";
 
@@ -32,6 +33,18 @@ export default function Player({
 
   const source = episode.sources[sourceIdx] ?? episode.sources[0];
 
+  // Reset per-source UI state when the source changes (React's
+  // render-time adjustment pattern — avoids setState inside the effect).
+  const [prevSource, setPrevSource] = useState(source);
+  if (prevSource !== source) {
+    setPrevSource(source);
+    setLevels([]);
+    setQuality(-1);
+    setStatus(
+      source?.type === "mp4" ? "Ready" : `Loading ${source?.name ?? "source"}…`
+    );
+  }
+
   const saveProgress = useCallback(() => {
     const video = videoRef.current;
     if (!video || !video.duration || video.currentTime < 3) return;
@@ -57,15 +70,21 @@ export default function Player({
     } catch {
       /* storage unavailable */
     }
+    // Phase 3: also sync to the account when logged in (fire-and-forget;
+    // guests get a silent 401). Called from the throttled timeupdate path,
+    // pause and unmount, so this stays a few requests per minute at most.
+    syncProgressRemote({
+      slug,
+      episode: episode.number,
+      position: video.currentTime,
+      duration: video.duration,
+    });
   }, [slug, episode.number]);
 
   // Attach the current source (HLS via hls.js, native HLS, or MP4)
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !source) return;
-    setLevels([]);
-    setQuality(-1);
-    setStatus(`Loading ${source.name}…`);
     hlsRef.current?.destroy();
     hlsRef.current = null;
 
@@ -84,13 +103,15 @@ export default function Player({
         });
       } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
         video.src = source.url; // Safari native HLS
-        setStatus("Ready (native HLS)");
+        const onMeta = () => setStatus("Ready (native HLS)");
+        video.addEventListener("loadedmetadata", onMeta, { once: true });
       } else {
-        setStatus("HLS is not supported in this browser.");
+        void Promise.resolve().then(() =>
+          setStatus("HLS is not supported in this browser.")
+        );
       }
     } else {
-      video.src = source.url;
-      setStatus("Ready");
+      video.src = source.url; // MP4 — status already set to "Ready" on switch
     }
 
     return () => {
@@ -99,26 +120,46 @@ export default function Player({
     };
   }, [source]);
 
-  // Resume position once metadata is available for this episode
+  // Resume position once metadata is available for this episode.
+  // Phase 3: compare the local resume point with the server's (account)
+  // progress for this title and use whichever is newer.
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    function onLoaded() {
+    let cancelled = false;
+    async function onLoaded() {
+      let localT = 0;
+      let localAt = 0;
       try {
         const raw = localStorage.getItem(progressKey(slug, episode.number));
-        if (!raw) return;
-        const { t, d } = JSON.parse(raw);
-        if (t > 5 && video!.duration && t < video!.duration - 15) {
-          video!.currentTime = t;
-          setResumedAt(Math.round(t));
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          localT = Number(parsed.t) || 0;
+          localAt = Number(parsed.at) || 0;
         }
-        void d;
       } catch {
         /* ignore */
       }
+      let resumeT = localT;
+      const lists = await fetchServerLists(); // null for guests
+      if (cancelled) return;
+      const serverEntry = lists?.progress[slug];
+      if (serverEntry && serverEntry.episode === episode.number) {
+        const serverMs = Date.parse(serverEntry.updatedAt) || 0;
+        if (serverMs > localAt && serverEntry.position > 0) {
+          resumeT = serverEntry.position;
+        }
+      }
+      if (resumeT > 5 && video!.duration && resumeT < video!.duration - 15) {
+        video!.currentTime = resumeT;
+        setResumedAt(Math.round(resumeT));
+      }
     }
     video.addEventListener("loadedmetadata", onLoaded);
-    return () => video.removeEventListener("loadedmetadata", onLoaded);
+    return () => {
+      cancelled = true;
+      video.removeEventListener("loadedmetadata", onLoaded);
+    };
   }, [slug, episode.number, source]);
 
   // Persist progress periodically + on pause/unmount
