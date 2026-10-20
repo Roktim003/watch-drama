@@ -1,0 +1,2123 @@
+[
+  {
+    "slug": "bound-by-fate-arafta",
+    "name": "Bound by Fate (Arafta)",
+    "type": "series",
+    "year": 2025,
+    "rating": 8.7,
+    "language": "Turkish",
+    "categories": [
+      "turkish-drama",
+      "series",
+      "romance"
+    ],
+    "genres": [
+      "Drama",
+      "Romance"
+    ],
+    "synopsis": "Two families bound by an old promise. A marriage arranged to settle a debt becomes a slow-burn story of pride, loyalty and a love neither of them asked for. (Sample catalogue entry — replace the video sources with your hosted files.)",
+    "cast": [
+      "Lead Actor",
+      "Lead Actress",
+      "Supporting Cast"
+    ],
+    "featured": true,
+    "trending": true,
+    "limitedFree": true,
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "number": 1,
+            "name": "Episode 1",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          },
+          {
+            "number": 2,
+            "name": "Episode 2",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              },
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          },
+          {
+            "number": 3,
+            "name": "Episode 3",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              },
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "the-vow-yemin",
+    "name": "The Vow (Yemin)",
+    "type": "series",
+    "year": 2024,
+    "rating": 8.4,
+    "language": "Turkish",
+    "categories": [
+      "turkish-drama",
+      "series",
+      "romance"
+    ],
+    "genres": [
+      "Drama",
+      "Romance"
+    ],
+    "synopsis": "A promise made on a deathbed pulls two strangers into the same house — and into each other's lives. A long-running daily drama of sacrifice and second chances.",
+    "cast": [
+      "Lead Actor",
+      "Lead Actress"
+    ],
+    "trending": true,
+    "limitedFree": true,
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "number": 1,
+            "name": "Episode 1",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          },
+          {
+            "number": 2,
+            "name": "Episode 2",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              },
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          },
+          {
+            "number": 3,
+            "name": "Episode 3",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              },
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "endless-love-kara-sevda",
+    "name": "Endless Love (Kara Sevda)",
+    "type": "series",
+    "year": 2023,
+    "rating": 8.9,
+    "language": "Turkish",
+    "categories": [
+      "turkish-drama",
+      "series",
+      "romance"
+    ],
+    "genres": [
+      "Drama",
+      "Romance",
+      "Thriller"
+    ],
+    "synopsis": "A mining engineer's son and an artist from a wealthy family fall in love — until money, obsession and a ruthless rival tear them apart. Years later, fate brings them back.",
+    "cast": [
+      "Lead Actor",
+      "Lead Actress",
+      "Antagonist"
+    ],
+    "trending": true,
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "number": 1,
+            "name": "Episode 1",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          },
+          {
+            "number": 2,
+            "name": "Episode 2",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              },
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          },
+          {
+            "number": 3,
+            "name": "Episode 3",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              },
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "magnificent-century",
+    "name": "Magnificent Century",
+    "type": "series",
+    "year": 2022,
+    "rating": 8.6,
+    "language": "Turkish",
+    "categories": [
+      "turkish-drama",
+      "series"
+    ],
+    "genres": [
+      "Historical",
+      "Drama"
+    ],
+    "synopsis": "Inside the palace of an empire at its peak: sultans, scheming queens and the woman who rose from captive to the most powerful figure in the court.",
+    "cast": [
+      "Lead Actor",
+      "Lead Actress"
+    ],
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "number": 1,
+            "name": "Episode 1",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          },
+          {
+            "number": 2,
+            "name": "Episode 2",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              },
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "resurrection-ertugrul",
+    "name": "Resurrection: Ertuğrul",
+    "type": "series",
+    "year": 2021,
+    "rating": 9.1,
+    "language": "Turkish",
+    "categories": [
+      "turkish-drama",
+      "series",
+      "action-movies"
+    ],
+    "genres": [
+      "Historical",
+      "Action",
+      "Adventure"
+    ],
+    "synopsis": "A warrior tribe fights for survival on the edge of two empires. The legendary story of the man whose son would found an empire.",
+    "cast": [
+      "Lead Actor",
+      "Lead Actress"
+    ],
+    "trending": true,
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "number": 1,
+            "name": "Episode 1",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          },
+          {
+            "number": 2,
+            "name": "Episode 2",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              },
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          },
+          {
+            "number": 3,
+            "name": "Episode 3",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              },
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "you-knock-on-my-door",
+    "name": "You Knock on My Door",
+    "type": "series",
+    "year": 2023,
+    "rating": 8.2,
+    "language": "Turkish",
+    "categories": [
+      "turkish-drama",
+      "series",
+      "romance"
+    ],
+    "genres": [
+      "Romance",
+      "Comedy"
+    ],
+    "synopsis": "A florist with big dreams and a cold perfectionist architect fake an engagement for two months. What could possibly go wrong?",
+    "cast": [
+      "Lead Actor",
+      "Lead Actress"
+    ],
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "number": 1,
+            "name": "Episode 1",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          },
+          {
+            "number": 2,
+            "name": "Episode 2",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              },
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "fatmagul",
+    "name": "Fatmagül",
+    "type": "series",
+    "year": 2020,
+    "rating": 8.8,
+    "language": "Turkish",
+    "categories": [
+      "turkish-drama",
+      "series"
+    ],
+    "genres": [
+      "Drama"
+    ],
+    "synopsis": "A young woman in a small coastal town fights for justice and rebuilds her life, in one of the most talked-about Turkish dramas ever made.",
+    "cast": [
+      "Lead Actress",
+      "Lead Actor"
+    ],
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "number": 1,
+            "name": "Episode 1",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          },
+          {
+            "number": 2,
+            "name": "Episode 2",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              },
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "crash-landing-on-you",
+    "name": "Crash Landing on You",
+    "type": "series",
+    "year": 2023,
+    "rating": 9,
+    "language": "Korean",
+    "categories": [
+      "k-drama",
+      "series",
+      "romance"
+    ],
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "synopsis": "A paragliding accident drops a South Korean heiress into North Korea — and into the life of the army captain who decides to hide her.",
+    "cast": [
+      "Lead Actor",
+      "Lead Actress"
+    ],
+    "trending": true,
+    "limitedFree": true,
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "number": 1,
+            "name": "Episode 1",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          },
+          {
+            "number": 2,
+            "name": "Episode 2",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              },
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          },
+          {
+            "number": 3,
+            "name": "Episode 3",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              },
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "business-proposal",
+    "name": "Business Proposal",
+    "type": "series",
+    "year": 2024,
+    "rating": 8.5,
+    "language": "Korean",
+    "categories": [
+      "k-drama",
+      "series",
+      "romance"
+    ],
+    "genres": [
+      "Romance",
+      "Comedy"
+    ],
+    "synopsis": "She goes on a blind date in her friend's place — and the date turns out to be her company's CEO. A fake relationship contract follows.",
+    "cast": [
+      "Lead Actor",
+      "Lead Actress"
+    ],
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "number": 1,
+            "name": "Episode 1",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          },
+          {
+            "number": 2,
+            "name": "Episode 2",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              },
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "queen-of-tears",
+    "name": "Queen of Tears",
+    "type": "series",
+    "year": 2024,
+    "rating": 8.8,
+    "language": "Korean",
+    "categories": [
+      "k-drama",
+      "series",
+      "romance"
+    ],
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "synopsis": "A married couple on the edge of divorce fall in love all over again after a diagnosis turns their world upside down.",
+    "cast": [
+      "Lead Actor",
+      "Lead Actress"
+    ],
+    "trending": true,
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "number": 1,
+            "name": "Episode 1",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          },
+          {
+            "number": 2,
+            "name": "Episode 2",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              },
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "hidden-love",
+    "name": "Hidden Love",
+    "type": "series",
+    "year": 2023,
+    "rating": 8.7,
+    "language": "Chinese",
+    "categories": [
+      "c-drama",
+      "series",
+      "romance"
+    ],
+    "genres": [
+      "Romance",
+      "Youth"
+    ],
+    "synopsis": "She has loved her brother's best friend since she was fourteen. A gentle, slow-burn campus romance about growing up and being brave.",
+    "cast": [
+      "Lead Actor",
+      "Lead Actress"
+    ],
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "number": 1,
+            "name": "Episode 1",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          },
+          {
+            "number": 2,
+            "name": "Episode 2",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              },
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "the-untamed",
+    "name": "The Untamed",
+    "type": "series",
+    "year": 2022,
+    "rating": 9.2,
+    "language": "Chinese",
+    "categories": [
+      "c-drama",
+      "series"
+    ],
+    "genres": [
+      "Fantasy",
+      "Action",
+      "Historical"
+    ],
+    "synopsis": "Two cultivators with opposite temperaments unravel a sixteen-year-old mystery in a world of clans, swords and dark magic.",
+    "cast": [
+      "Lead Actor",
+      "Lead Actor"
+    ],
+    "trending": true,
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "number": 1,
+            "name": "Episode 1",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          },
+          {
+            "number": 2,
+            "name": "Episode 2",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              },
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          },
+          {
+            "number": 3,
+            "name": "Episode 3",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              },
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "eternal-love",
+    "name": "Eternal Love",
+    "type": "series",
+    "year": 2021,
+    "rating": 8.9,
+    "language": "Chinese",
+    "categories": [
+      "c-drama",
+      "series",
+      "romance"
+    ],
+    "genres": [
+      "Fantasy",
+      "Romance",
+      "Historical"
+    ],
+    "synopsis": "A love that survives three lifetimes, three worlds — gods, mortals and demons collide in this sweeping xianxia epic.",
+    "cast": [
+      "Lead Actor",
+      "Lead Actress"
+    ],
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "number": 1,
+            "name": "Episode 1",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          },
+          {
+            "number": 2,
+            "name": "Episode 2",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              },
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "solo-leveling",
+    "name": "Solo Leveling",
+    "type": "series",
+    "year": 2024,
+    "rating": 9.3,
+    "language": "English Dub",
+    "categories": [
+      "anime",
+      "series",
+      "action-movies"
+    ],
+    "genres": [
+      "Anime",
+      "Action",
+      "Fantasy"
+    ],
+    "synopsis": "The world's weakest hunter gains a mysterious system that lets him level up without limit. From prey to predator.",
+    "cast": [
+      "Voice Cast"
+    ],
+    "trending": true,
+    "limitedFree": true,
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "number": 1,
+            "name": "Episode 1",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          },
+          {
+            "number": 2,
+            "name": "Episode 2",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              },
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          },
+          {
+            "number": 3,
+            "name": "Episode 3",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              },
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "jujutsu-kaisen",
+    "name": "Jujutsu Kaisen",
+    "type": "series",
+    "year": 2023,
+    "rating": 9,
+    "language": "English Dub",
+    "categories": [
+      "anime",
+      "series",
+      "action-movies"
+    ],
+    "genres": [
+      "Anime",
+      "Action",
+      "Supernatural"
+    ],
+    "synopsis": "A high-schooler swallows a cursed finger and becomes the vessel of the King of Curses. Now he hunts curses — before they hunt everyone else.",
+    "cast": [
+      "Voice Cast"
+    ],
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "number": 1,
+            "name": "Episode 1",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          },
+          {
+            "number": 2,
+            "name": "Episode 2",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              },
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "frieren",
+    "name": "Frieren: Beyond Journey's End",
+    "type": "series",
+    "year": 2024,
+    "rating": 9.4,
+    "language": "Japanese · Sub",
+    "categories": [
+      "anime",
+      "series"
+    ],
+    "genres": [
+      "Anime",
+      "Fantasy",
+      "Drama"
+    ],
+    "synopsis": "The hero's party defeated the Demon King decades ago. For an elf who lives a thousand years, learning what those ten years meant takes another journey.",
+    "cast": [
+      "Voice Cast"
+    ],
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "number": 1,
+            "name": "Episode 1",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          },
+          {
+            "number": 2,
+            "name": "Episode 2",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              },
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "sintel-the-movie",
+    "name": "Sintel — The Movie (Sample Film)",
+    "type": "movie",
+    "year": 2022,
+    "rating": 8.1,
+    "language": "English",
+    "categories": [
+      "movies",
+      "action-movies"
+    ],
+    "genres": [
+      "Fantasy",
+      "Adventure"
+    ],
+    "synopsis": "A lonely young woman searches the frozen wastes for the dragon she once rescued. Sample catalogue entry — its episodes demo the HLS and MP4 sample streams.",
+    "cast": [
+      "Voice Cast"
+    ],
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "number": 1,
+            "name": "Episode 1",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "extraction-point",
+    "name": "Extraction Point",
+    "type": "movie",
+    "year": 2025,
+    "rating": 7.9,
+    "language": "English",
+    "categories": [
+      "movies",
+      "action-movies"
+    ],
+    "genres": [
+      "Action",
+      "Thriller"
+    ],
+    "synopsis": "One night, one city, one way out. A getaway driver takes a final job that turns into a fight for survival. (Sample catalogue entry.)",
+    "cast": [
+      "Lead Actor",
+      "Lead Actress"
+    ],
+    "trending": true,
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "number": 1,
+            "name": "Episode 1",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "the-love-hypothesis",
+    "name": "The Love Hypothesis",
+    "type": "movie",
+    "year": 2025,
+    "rating": 8.3,
+    "language": "English",
+    "categories": [
+      "movies",
+      "romance"
+    ],
+    "genres": [
+      "Romance",
+      "Comedy"
+    ],
+    "synopsis": "A PhD candidate and a grumpy professor agree to a fake relationship to test a hypothesis about love. The data surprises them both. (Sample catalogue entry.)",
+    "cast": [
+      "Lead Actor",
+      "Lead Actress"
+    ],
+    "trending": true,
+    "limitedFree": true,
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "number": 1,
+            "name": "Episode 1",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "my-fault-london",
+    "name": "My Fault: London",
+    "type": "movie",
+    "year": 2025,
+    "rating": 7.8,
+    "language": "English",
+    "categories": [
+      "movies",
+      "romance"
+    ],
+    "genres": [
+      "Romance",
+      "Drama"
+    ],
+    "synopsis": "New city, new family, and a stepbrother who is strictly off limits — in every way except the one that matters. (Sample catalogue entry.)",
+    "cast": [
+      "Lead Actor",
+      "Lead Actress"
+    ],
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "number": 1,
+            "name": "Episode 1",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "the-hidden-billionaire",
+    "name": "The Hidden Billionaire Returns",
+    "type": "short",
+    "year": 2025,
+    "rating": 8,
+    "language": "English",
+    "categories": [
+      "hot-short-tv"
+    ],
+    "genres": [
+      "Short Drama",
+      "Revenge",
+      "Romance"
+    ],
+    "synopsis": "Humiliated as a poor son-in-law for three years, he finally reveals who he really is. One-minute episodes, endless cliffhangers. (Sample catalogue entry.)",
+    "cast": [
+      "Lead Actor",
+      "Lead Actress"
+    ],
+    "trending": true,
+    "limitedFree": true,
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "number": 1,
+            "name": "Episode 1",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          },
+          {
+            "number": 2,
+            "name": "Episode 2",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              },
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          },
+          {
+            "number": 3,
+            "name": "Episode 3",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              },
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "divorced-by-mistake",
+    "name": "Divorced by Mistake",
+    "type": "short",
+    "year": 2025,
+    "rating": 7.7,
+    "language": "English",
+    "categories": [
+      "hot-short-tv",
+      "romance"
+    ],
+    "genres": [
+      "Short Drama",
+      "Romance"
+    ],
+    "synopsis": "A filing error marries her to a stranger — and divorces her from her fiancé. Now the stranger refuses to sign. (Sample catalogue entry.)",
+    "cast": [
+      "Lead Actor",
+      "Lead Actress"
+    ],
+    "seasons": [
+      {
+        "number": 1,
+        "episodes": [
+          {
+            "number": 1,
+            "name": "Episode 1",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          },
+          {
+            "number": 2,
+            "name": "Episode 2",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              },
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          },
+          {
+            "number": 3,
+            "name": "Episode 3",
+            "duration": "42 min",
+            "sources": [
+              {
+                "name": "Server 3 · SAMPLE",
+                "url": "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
+                "type": "mp4"
+              },
+              {
+                "name": "Server 1 · SAMPLE",
+                "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                "type": "hls"
+              },
+              {
+                "name": "Server 2 · SAMPLE",
+                "url": "https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_16x9/bipbop_16x9_variant.m3u8",
+                "type": "hls"
+              }
+            ],
+            "subtitles": [
+              {
+                "lang": "English (Sample)",
+                "url": "/subtitles/sample-en.vtt"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "the-remarried-empress",
+    "name": "The Remarried Empress",
+    "type": "series",
+    "year": 2026,
+    "rating": 0,
+    "language": "Korean",
+    "categories": [
+      "k-drama",
+      "series",
+      "coming-soon"
+    ],
+    "genres": [
+      "Fantasy",
+      "Romance"
+    ],
+    "synopsis": "Betrayed by her emperor husband, a perfect empress agrees to a divorce — on one condition: she gets to remarry the neighbouring prince.",
+    "cast": [
+      "To be announced"
+    ],
+    "comingSoon": true,
+    "releaseDate": "Nov 4",
+    "bookedCount": 14570,
+    "seasons": []
+  },
+  {
+    "slug": "istanbul-nights",
+    "name": "Istanbul Nights",
+    "type": "series",
+    "year": 2026,
+    "rating": 0,
+    "language": "Turkish",
+    "categories": [
+      "turkish-drama",
+      "series",
+      "coming-soon"
+    ],
+    "genres": [
+      "Drama",
+      "Romance"
+    ],
+    "synopsis": "A night-shift taxi driver and a runaway heiress meet on the Bosphorus bridge at 3 a.m. The city's most anticipated new Turkish drama.",
+    "cast": [
+      "To be announced"
+    ],
+    "comingSoon": true,
+    "releaseDate": "Oct 29",
+    "bookedCount": 11448,
+    "seasons": []
+  },
+  {
+    "slug": "black-clover-movie",
+    "name": "Black Clover: The Movie",
+    "type": "movie",
+    "year": 2026,
+    "rating": 0,
+    "language": "English Dub",
+    "categories": [
+      "anime",
+      "movies",
+      "coming-soon"
+    ],
+    "genres": [
+      "Anime",
+      "Action"
+    ],
+    "synopsis": "Asta faces the Wizard Kings of the past in an all-new original film adventure.",
+    "cast": [
+      "Voice Cast"
+    ],
+    "comingSoon": true,
+    "releaseDate": "Oct 30",
+    "bookedCount": 5840,
+    "seasons": []
+  },
+  {
+    "slug": "make-me-tremble",
+    "name": "Make Me Tremble",
+    "type": "short",
+    "year": 2026,
+    "rating": 0,
+    "language": "English",
+    "categories": [
+      "hot-short-tv",
+      "coming-soon"
+    ],
+    "genres": [
+      "Short Drama",
+      "Romance"
+    ],
+    "synopsis": "The short drama everyone will be talking about next month. Book early.",
+    "cast": [
+      "To be announced"
+    ],
+    "comingSoon": true,
+    "releaseDate": "Oct 16",
+    "bookedCount": 27806,
+    "seasons": []
+  }
+]
