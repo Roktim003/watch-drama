@@ -1,0 +1,13 @@
+WEBVTT - Sample subtitle track (demo only)
+
+00:00:00.000 --> 00:00:05.000
+[Sample subtitles] This is a demo subtitle track.
+
+00:00:05.000 --> 00:00:11.000
+Replace this file's URL with your own .vtt file per episode.
+
+00:00:11.000 --> 00:00:18.000
+See CONTENT.md in the project for step-by-step instructions.
+
+00:00:30.000 --> 00:00:38.000
+Subtitles can be switched from the Subtitles menu below the player.
