@@ -1,26 +1,32 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// WatchDrama — server-side catalogue store (Phase 2).
+// WatchDrama — server-side catalogue store (Phase 2; dual-mode Phase 4B).
 //
-// The catalogue lives in `catalog.json` inside the data directory (see
-// lib/dataDir.ts: $DATA_DIR when set, otherwise ./data in the project
-// root — Phase 4). On first run (file missing) it is seeded from the
-// bundled defaults shipped with the app (the repo's data/catalog.json,
-// which mirrors the Phase 1 sample catalogue in lib/catalog.ts), falling
-// back to TITLES directly. All public pages and the admin panel
-// read/write through this module — never import it from client components.
+// DUAL MODE — same exported interface in both:
+//   • DATABASE_URL set   → Postgres (table wd_titles, one JSONB doc per
+//                          title; see lib/db.ts). No file access, no cache:
+//                          reads are direct queries, uniqueness is enforced
+//                          by the primary key. This is the Vercel mode.
+//   • DATABASE_URL unset → the original JSON file store described below.
 //
-// Writes are "atomic-ish": serialize to a temp file in the same directory,
-// then rename over the target, so a crash mid-write can't corrupt the file.
-// Writes are also funnelled through a small promise chain so concurrent
-// requests in this process can't interleave. This is a single-process,
-// single-admin store — it is NOT safe for multi-instance deployments
-// (two servers sharing one file). For that, move to a real database.
+// FILE MODE: the catalogue lives in `catalog.json` inside the data
+// directory (see lib/dataDir.ts: $DATA_DIR when set, otherwise ./data in
+// the project root — Phase 4). On first run (file missing) it is seeded
+// from the bundled defaults shipped with the app (the repo's
+// data/catalog.json, which mirrors the Phase 1 sample catalogue in
+// lib/catalog.ts), falling back to TITLES directly. All public pages and
+// the admin panel read/write through this module — never import it from
+// client components. Writes are "atomic-ish": serialize to a temp file in
+// the same directory, then rename over the target, so a crash mid-write
+// can't corrupt the file. Writes are also funnelled through a small
+// promise chain so concurrent requests in this process can't interleave.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { promises as fs } from "fs";
 import path from "path";
 import { TITLES, type Title } from "./catalog";
 import { bundledDataDir, dataDir, dataFile } from "./dataDir";
+import { ensureSchema, getDb, isDbMode, isUniqueViolation, wdTitles } from "./db";
+import { eq } from "drizzle-orm";
 
 const DATA_FILE = dataFile("catalog.json");
 
@@ -60,8 +66,34 @@ async function ensureSeeded(): Promise<void> {
   }
 }
 
-/** Read all titles (cached by file mtime; invalidated on write). */
+// ── DB mode (Phase 4B) ───────────────────────────────────────────────────────
+const SEED_ORDER = new Map(TITLES.map((t, i) => [t.slug, i]));
+
+async function dbGetTitles(): Promise<Title[]> {
+  await ensureSchema();
+  const rows = await getDb().select({ doc: wdTitles.doc }).from(wdTitles);
+  const titles = rows.map((r) => r.doc);
+  // File mode preserves insertion order and pages present rows in store
+  // order, so DB mode reproduces it for the seeded catalogue (seed index),
+  // with later/admin titles after, ordered by slug. Deterministic and —
+  // for the shipped catalogue — identical to file mode.
+  titles.sort((a, b) => {
+    const ia = SEED_ORDER.get(a.slug) ?? Number.POSITIVE_INFINITY;
+    const ib = SEED_ORDER.get(b.slug) ?? Number.POSITIVE_INFINITY;
+    return ia !== ib ? ia - ib : a.slug.localeCompare(b.slug);
+  });
+  return titles;
+}
+
+async function dbGetTitle(slug: string): Promise<Title | undefined> {
+  await ensureSchema();
+  const rows = await getDb().select({ doc: wdTitles.doc }).from(wdTitles).where(eq(wdTitles.slug, slug));
+  return rows[0]?.doc;
+}
+
+/** Read all titles (file mode: cached by file mtime; DB mode: direct query). */
 export async function getTitles(): Promise<Title[]> {
+  if (isDbMode()) return dbGetTitles();
   await ensureSeeded();
   const stat = await fs.stat(DATA_FILE);
   if (cache && cache.mtimeMs === stat.mtimeMs) return cache.titles;
@@ -76,6 +108,7 @@ export async function getTitles(): Promise<Title[]> {
 }
 
 export async function getTitle(slug: string): Promise<Title | undefined> {
+  if (isDbMode()) return dbGetTitle(slug);
   const titles = await getTitles();
   return titles.find((t) => t.slug === slug);
 }
@@ -103,6 +136,18 @@ function mutate<T>(fn: (titles: Title[]) => Promise<{ titles: Title[]; result: T
 }
 
 export async function createTitle(title: Title): Promise<Title> {
+  if (isDbMode()) {
+    await ensureSchema();
+    try {
+      await getDb().insert(wdTitles).values({ slug: title.slug, doc: title });
+    } catch (e) {
+      if (isUniqueViolation(e)) {
+        throw new StoreError(`A title with slug "${title.slug}" already exists`);
+      }
+      throw e;
+    }
+    return title;
+  }
   return mutate(async (titles) => {
     if (titles.some((t) => t.slug === title.slug)) {
       throw new StoreError(`A title with slug "${title.slug}" already exists`);
@@ -113,6 +158,34 @@ export async function createTitle(title: Title): Promise<Title> {
 }
 
 export async function updateTitle(slug: string, title: Title): Promise<Title> {
+  if (isDbMode()) {
+    await ensureSchema();
+    const db = getDb();
+    const existing = await dbGetTitle(slug);
+    if (!existing) throw new StoreError(`Title "${slug}" not found`, 404);
+    if (title.slug !== slug && (await dbGetTitle(title.slug))) {
+      throw new StoreError(`A title with slug "${title.slug}" already exists`);
+    }
+    try {
+      // Update in place when the slug is unchanged; re-key (delete+insert)
+      // when the admin renamed the slug.
+      if (title.slug === slug) {
+        await db
+          .update(wdTitles)
+          .set({ doc: title, updatedAt: new Date() })
+          .where(eq(wdTitles.slug, slug));
+      } else {
+        await db.delete(wdTitles).where(eq(wdTitles.slug, slug));
+        await db.insert(wdTitles).values({ slug: title.slug, doc: title });
+      }
+    } catch (e) {
+      if (isUniqueViolation(e)) {
+        throw new StoreError(`A title with slug "${title.slug}" already exists`);
+      }
+      throw e;
+    }
+    return title;
+  }
   return mutate(async (titles) => {
     const idx = titles.findIndex((t) => t.slug === slug);
     if (idx === -1) throw new StoreError(`Title "${slug}" not found`, 404);
@@ -125,6 +198,15 @@ export async function updateTitle(slug: string, title: Title): Promise<Title> {
 }
 
 export async function deleteTitle(slug: string): Promise<void> {
+  if (isDbMode()) {
+    await ensureSchema();
+    const deleted = await getDb()
+      .delete(wdTitles)
+      .where(eq(wdTitles.slug, slug))
+      .returning({ slug: wdTitles.slug });
+    if (!deleted.length) throw new StoreError(`Title "${slug}" not found`, 404);
+    return;
+  }
   return mutate(async (titles) => {
     const idx = titles.findIndex((t) => t.slug === slug);
     if (idx === -1) throw new StoreError(`Title "${slug}" not found`, 404);
@@ -135,6 +217,20 @@ export async function deleteTitle(slug: string): Promise<void> {
 
 /** Replace the whole catalogue (used by import). */
 export async function replaceTitles(titles: Title[]): Promise<void> {
+  if (isDbMode()) {
+    await ensureSchema();
+    const db = getDb();
+    await db.transaction(async (tx) => {
+      await tx.delete(wdTitles);
+      for (const t of titles) {
+        await tx.insert(wdTitles).values({ slug: t.slug, doc: t });
+      }
+    });
+    // Match file-mode ordering for the imported set.
+    SEED_ORDER.clear();
+    titles.forEach((t, i) => SEED_ORDER.set(t.slug, i));
+    return;
+  }
   return mutate(async () => ({ titles, result: undefined }));
 }
 

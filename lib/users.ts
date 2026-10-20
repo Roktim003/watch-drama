@@ -1,15 +1,19 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// WatchDrama — viewer user store (Phase 3).
+// WatchDrama — viewer user store (Phase 3; dual-mode Phase 4B).
 //
-// Viewer accounts live in `users.json` inside the data directory (see
-// lib/dataDir.ts: $DATA_DIR when set, otherwise ./data in the project
-// root — Phase 4), using the same JSON-store pattern as the catalogue
-// (lib/store.ts): seeded on first run (from the bundled users.json shipped
-// with the app, or empty), writes go to a temp file then rename over the
-// target, and all mutations are funnelled through a promise chain so
-// concurrent requests in this process can't interleave. Single-process
-// store — NOT safe for multi-instance deployments; move to a real
-// database for that.
+// DUAL MODE — same exported interface in both:
+//   • DATABASE_URL set   → Postgres (table wd_users, one JSONB doc per
+//                          user, unique email enforced by the DB; see
+//                          lib/db.ts). This is the Vercel mode.
+//   • DATABASE_URL unset → the original JSON file store described below.
+//
+// FILE MODE: viewer accounts live in `users.json` inside the data
+// directory (see lib/dataDir.ts: $DATA_DIR when set, otherwise ./data in
+// the project root — Phase 4), using the same JSON-store pattern as the
+// catalogue (lib/store.ts): seeded on first run (from the bundled
+// users.json shipped with the app, or empty), writes go to a temp file
+// then rename over the target, and all mutations are funnelled through a
+// promise chain so concurrent requests in this process can't interleave.
 //
 // Passwords are NEVER stored in plaintext. Each user gets a random salt
 // and the stored `passwordHash` is scrypt(password, salt) using Node's
@@ -20,43 +24,14 @@ import { promises as fs } from "fs";
 import path from "path";
 import { randomBytes, randomUUID, scryptSync, timingSafeEqual } from "crypto";
 import { bundledDataDir, dataDir, dataFile } from "./dataDir";
+import { ensureSchema, getDb, isDbMode, isUniqueViolation, wdUsers } from "./db";
+import { eq } from "drizzle-orm";
+import type { User, UserProgress } from "./users-types";
+
+export type { User, UserProgress, PublicUser } from "./users-types";
+export { toPublicUser } from "./users-types";
 
 const DATA_FILE = dataFile("users.json");
-
-export interface UserProgress {
-  episode: number;
-  position: number; // seconds
-  duration: number; // seconds
-  updatedAt: string; // ISO timestamp
-}
-
-export interface User {
-  id: string;
-  name: string;
-  email: string; // stored lowercase, unique
-  passwordHash: string;
-  salt: string;
-  createdAt: string;
-  watchlist: string[]; // title slugs
-  bookings: string[]; // coming-soon title slugs
-  progress: Record<string, UserProgress>; // keyed by title slug (latest episode)
-}
-
-export interface PublicUser {
-  id: string;
-  name: string;
-  email: string;
-  createdAt: string;
-}
-
-export function toPublicUser(user: User): PublicUser {
-  return {
-    id: user.id,
-    name: user.name,
-    email: user.email,
-    createdAt: user.createdAt,
-  };
-}
 
 // ── Password hashing (scrypt) ────────────────────────────────────────────────
 const SCRYPT_KEYLEN = 64;
@@ -111,7 +86,28 @@ async function ensureSeeded(): Promise<void> {
   }
 }
 
+// ── DB mode (Phase 4B) ───────────────────────────────────────────────────────
+async function dbGetUsers(): Promise<User[]> {
+  await ensureSchema();
+  const rows = await getDb().select({ doc: wdUsers.doc }).from(wdUsers);
+  return rows.map((r) => r.doc);
+}
+
+async function dbGetUserById(id: string): Promise<User | undefined> {
+  await ensureSchema();
+  const rows = await getDb().select({ doc: wdUsers.doc }).from(wdUsers).where(eq(wdUsers.id, id));
+  return rows[0]?.doc;
+}
+
+async function dbUpdateUserDoc(user: User): Promise<void> {
+  await getDb()
+    .update(wdUsers)
+    .set({ doc: user, email: user.email, updatedAt: new Date() })
+    .where(eq(wdUsers.id, user.id));
+}
+
 export async function getUsers(): Promise<User[]> {
+  if (isDbMode()) return dbGetUsers();
   await ensureSeeded();
   const stat = await fs.stat(DATA_FILE);
   if (cache && cache.mtimeMs === stat.mtimeMs) return cache.users;
@@ -126,11 +122,20 @@ export async function getUsers(): Promise<User[]> {
 }
 
 export async function getUserByEmail(email: string): Promise<User | undefined> {
+  if (isDbMode()) {
+    await ensureSchema();
+    const rows = await getDb()
+      .select({ doc: wdUsers.doc })
+      .from(wdUsers)
+      .where(eq(wdUsers.email, email.toLowerCase()));
+    return rows[0]?.doc;
+  }
   const users = await getUsers();
   return users.find((u) => u.email === email.toLowerCase());
 }
 
 export async function getUserById(id: string): Promise<User | undefined> {
+  if (isDbMode()) return dbGetUserById(id);
   const users = await getUsers();
   return users.find((u) => u.id === id);
 }
@@ -165,12 +170,40 @@ export class UserError extends Error {
 }
 
 // ── CRUD ─────────────────────────────────────────────────────────────────────
+function buildUser(input: { name: string; email: string; password: string }): User {
+  const salt = newSalt();
+  return {
+    id: randomUUID(),
+    name: input.name,
+    email: input.email.toLowerCase(),
+    passwordHash: hashPassword(input.password, salt),
+    salt,
+    createdAt: new Date().toISOString(),
+    watchlist: [],
+    bookings: [],
+    progress: {},
+  };
+}
+
 export async function createUser(input: {
   name: string;
   email: string;
   password: string;
 }): Promise<User> {
   const email = input.email.toLowerCase();
+  if (isDbMode()) {
+    await ensureSchema();
+    const user = buildUser(input);
+    try {
+      await getDb().insert(wdUsers).values({ id: user.id, email: user.email, doc: user });
+    } catch (e) {
+      if (isUniqueViolation(e)) {
+        throw new UserError("An account with this email already exists");
+      }
+      throw e;
+    }
+    return user;
+  }
   return mutate(async (users) => {
     if (users.some((u) => u.email === email)) {
       throw new UserError("An account with this email already exists");
@@ -197,6 +230,16 @@ export async function updateUserLists(
   id: string,
   patch: Partial<Pick<User, "watchlist" | "bookings" | "progress">>
 ): Promise<User> {
+  if (isDbMode()) {
+    const existing = await dbGetUserById(id);
+    if (!existing) throw new UserError("User not found", 404);
+    const next = { ...existing };
+    if (patch.watchlist !== undefined) next.watchlist = [...patch.watchlist];
+    if (patch.bookings !== undefined) next.bookings = [...patch.bookings];
+    if (patch.progress !== undefined) next.progress = { ...patch.progress };
+    await dbUpdateUserDoc(next);
+    return next;
+  }
   return mutate(async (users) => {
     const idx = users.findIndex((u) => u.id === id);
     if (idx === -1) throw new UserError("User not found", 404);
@@ -215,6 +258,16 @@ export async function toggleUserSlug(
   field: "watchlist" | "bookings",
   slug: string
 ): Promise<string[]> {
+  if (isDbMode()) {
+    const existing = await dbGetUserById(id);
+    if (!existing) throw new UserError("User not found", 404);
+    const list = [...existing[field]];
+    const at = list.indexOf(slug);
+    if (at === -1) list.push(slug);
+    else list.splice(at, 1);
+    await dbUpdateUserDoc({ ...existing, [field]: list });
+    return list;
+  }
   return mutate(async (users) => {
     const idx = users.findIndex((u) => u.id === id);
     if (idx === -1) throw new UserError("User not found", 404);
@@ -232,6 +285,13 @@ export async function upsertProgress(
   slug: string,
   entry: UserProgress
 ): Promise<UserProgress> {
+  if (isDbMode()) {
+    const existing = await dbGetUserById(id);
+    if (!existing) throw new UserError("User not found", 404);
+    const progress = { ...existing.progress, [slug]: entry };
+    await dbUpdateUserDoc({ ...existing, progress });
+    return entry;
+  }
   return mutate(async (users) => {
     const idx = users.findIndex((u) => u.id === id);
     if (idx === -1) throw new UserError("User not found", 404);
@@ -242,6 +302,14 @@ export async function upsertProgress(
 }
 
 export async function deleteProgress(id: string, slug: string): Promise<void> {
+  if (isDbMode()) {
+    const existing = await dbGetUserById(id);
+    if (!existing) throw new UserError("User not found", 404);
+    const progress = { ...existing.progress };
+    delete progress[slug];
+    await dbUpdateUserDoc({ ...existing, progress });
+    return;
+  }
   return mutate(async (users) => {
     const idx = users.findIndex((u) => u.id === id);
     if (idx === -1) throw new UserError("User not found", 404);
