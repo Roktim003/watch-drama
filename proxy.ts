@@ -108,12 +108,41 @@ function catalogueIndex(): Map<string, Set<number>> | null {
   }
 }
 
-export function proxy(request: NextRequest) {
+// ── DB mode (Phase 4B) ──────────────────────────────────────────────────────
+// When DATABASE_URL is set, the JSON file may be stale/absent — the live
+// catalogue is in Postgres. The proxy resolves slugs from the app's own
+// GET /api/public/slugs route (same origin), cached ~30s per instance.
+// A stale cache can briefly 404 a just-added title or briefly allow a
+// just-deleted one; the page itself always reads the DB, so worst case
+// is a wrong status for up to ~30s, never wrong content.
+const SLUG_CACHE_MS = 30_000;
+let dbSlugCache: { at: number; index: Map<string, Set<number>> } | null = null;
+
+async function dbCatalogueIndex(request: NextRequest): Promise<Map<string, Set<number>> | null> {
+  if (dbSlugCache && Date.now() - dbSlugCache.at < SLUG_CACHE_MS) return dbSlugCache.index;
+  try {
+    const res = await fetch(new URL("/api/public/slugs", request.nextUrl.origin), {
+      headers: { "x-wd-proxy": "1" },
+    });
+    if (!res.ok) return dbSlugCache?.index ?? null;
+    const data = (await res.json()) as { slugs: Array<{ slug: string; episodes: number[] }> };
+    const map = new Map<string, Set<number>>();
+    for (const s of data.slugs ?? []) map.set(s.slug, new Set(s.episodes ?? []));
+    dbSlugCache = { at: Date.now(), index: map };
+    return map;
+  } catch {
+    return dbSlugCache?.index ?? null; // route unreachable → let the page handle it
+  }
+}
+
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const publicPage = pathname.match(/^\/(title|watch)\/([^/]+)(?:\/([^/]+))?/);
   if (publicPage) {
-    const index = catalogueIndex();
+    const index = process.env.DATABASE_URL?.trim()
+      ? await dbCatalogueIndex(request)
+      : catalogueIndex();
     const slug = decodeURIComponent(publicPage[2]);
     const episodes = index?.get(slug);
     const badEpisode =

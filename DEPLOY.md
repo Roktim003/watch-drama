@@ -1,14 +1,14 @@
 # Deploying WatchDrama — Launch Runbook
 
 Everything needed to put WatchDrama on the internet is in this project.
-Pick **Route A** unless you have a specific reason not to — it's the one
-that works exactly as the project ships.
+Both routes work as the project ships (Phase 4B added Postgres storage
+for Vercel). Pick by where you want your data to live.
 
-| | Route A — VPS + Docker ⭐ | Route B — Vercel |
+| | Route A — VPS + Docker | Route B — Vercel + Neon Postgres ⭐ |
 |---|---|---|
-| Works as-is? | ✅ Yes | ❌ Not yet (see below) |
-| Monthly cost | ~US $6–12 VPS | Free tier exists, but needs a database migration first |
-| Your data lives | On the VPS, in a Docker volume | — |
+| Works as-is? | ✅ Yes (file mode) | ✅ Yes (Postgres mode) |
+| Monthly cost | ~US $6–12 VPS | Free tiers exist for both Vercel + Neon |
+| Your data lives | On the VPS, in a Docker volume | In Neon Postgres (managed) |
 | HTTPS | Automatic (Caddy) | Automatic |
 
 ---
@@ -146,20 +146,88 @@ seed a brand-new volume on first run.
 
 ---
 
-## Route B — Vercel (does NOT work as-is)
+## Route B — Vercel + Neon Postgres
 
-Vercel is a great host for Next.js, but **don't deploy this project there
-yet.** Vercel runs the app on serverless functions with an **ephemeral
-filesystem**: the JSON data stores (`catalog.json`, `users.json`) would be
-read-only / wiped between requests, so the admin panel couldn't save
-titles and viewer accounts couldn't persist.
+Since Phase 4B the app has **dual-mode storage**: set `DATABASE_URL` and
+the catalogue + viewer accounts live in Postgres; leave it unset and it
+runs on the JSON files (Route A). Vercel's serverless filesystem is
+ephemeral, so on Vercel you always run in Postgres mode.
 
-To use Vercel, the two stores first need to move to a hosted data service
-— e.g. **Postgres** (Neon/Supabase) or **Redis/KV** (Upstash). The code is
-prepared for this: `lib/store.ts` and `lib/users.ts` are the only files
-that touch the files, so it's a contained **mini-phase**: swap those two
-modules' internals for database calls, keep every API and page the same.
-Ask for "Phase 4B — database migration" if you choose this route.
+### 1. Import the project into Vercel
+
+Go to https://vercel.com/new and import the GitHub repo
+**`Roktim003/watch-drama`**. Framework preset: Next.js (auto-detected).
+Don't deploy yet if you want the database attached first — either order
+works, but attaching the database first means the very first deploy
+already runs in Postgres mode.
+
+### 2. Create the Postgres database (Neon, inside Vercel)
+
+In the Vercel project dashboard:
+
+1. **Storage** tab → **Create Database** → **Neon Postgres** (marketplace
+   integration) → pick a region near your audience → Create.
+2. Vercel automatically adds the **`DATABASE_URL`** environment variable
+   to the project (all environments). You don't copy it by hand — verify
+   it's there under **Settings → Environment Variables**.
+
+### 3. Set the remaining environment variables
+
+**Settings → Environment Variables** (Production + Preview):
+
+```bash
+ADMIN_PASSWORD=<a long, unique password — this guards /admin>
+USER_SESSION_SECRET=<long random string — run: openssl rand -hex 32>
+NEXT_PUBLIC_SITE_URL=https://yourdomain.com   # or the *.vercel.app URL for a first test
+```
+
+(`DATABASE_URL` comes from the Neon integration in step 2.)
+
+### 4. Deploy
+
+**Deployments → Redeploy** (or push any commit). When it finishes, open
+the site URL — on its very first request the app creates its tables and
+seeds itself with the sample catalogue automatically.
+
+### 5. Move your existing file data (optional)
+
+If you've been adding real titles/accounts in file mode and want them in
+the database, run the one-shot migration from your PC — it upserts
+everything from `data/catalog.json` + `data/users.json` and prints
+before/after counts:
+
+```bash
+DATABASE_URL=<the Neon connection string from Vercel/Neon> npm run db:migrate
+```
+
+(Get the string from the Neon dashboard → Connection Details, or
+`vercel env pull`.) **Don't want to bother?** Skip it: the DB starts with
+the sample catalogue and you can re-add your real content in `/admin`.
+
+### 6. Verify
+
+```bash
+curl https://yourdomain.com/api/health
+# → {"ok":true,"titles":26,"users":0,"uptime":...,"storage":"postgres"}
+```
+
+`"storage":"postgres"` is the line that proves you're on the database.
+Then log in at `/admin`, add a title, and confirm it appears on the
+homepage and survives a redeploy.
+
+### 7. Add your custom domain
+
+**Settings → Domains** → add your domain and follow Vercel's DNS
+instructions (an A/CNAME record at your registrar). HTTPS is automatic.
+After the domain works, set `NEXT_PUBLIC_SITE_URL` to it and redeploy
+(it's baked into page metadata at build time).
+
+**Good to know on Vercel:** functions are stateless and there can be
+several instances — that's fine in Postgres mode (the DB serializes
+writes). The proxy's slug check reads slugs through the app with a ~30 s
+cache per instance, so a brand-new title's *page* works immediately; in
+the worst case its URL returns a stale 404 for under ~30 s on an instance
+that cached the old slug list.
 
 ---
 
@@ -180,6 +248,11 @@ Ask for "Phase 4B — database migration" if you choose this route.
 - [ ] Set up the backup routine below.
 
 ## Backups (5 minutes to set up, saves you someday)
+
+**On Vercel/Neon (Route B)?** Your backup is the database: Neon keeps
+automatic backups/point-in-time restore on paid plans, and you can also
+run Admin → **Export** for a portable JSON copy of the catalogue. The
+Docker-volume steps below are Route A only.
 
 Two things are worth backing up — do both weekly (or before every update):
 

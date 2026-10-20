@@ -144,10 +144,8 @@ An account is only for syncing personal lists across devices.
 ## Phase 4 — Deployment readiness
 
 The project now ships as a deploy-ready launch package. **The full
-runbook is [DEPLOY.md](./DEPLOY.md)** — Route A (VPS + Docker) works
-as-is; Route B (Vercel) does **not**, because serverless filesystems
-can't persist the JSON stores (a store-to-database migration would be a
-separate mini-phase; `lib/store.ts` / `lib/users.ts` are the seam).
+runbook is [DEPLOY.md](./DEPLOY.md)** — Route A (VPS + Docker, file
+mode) and Route B (Vercel + Postgres — see Phase 4B below) both work.
 
 - **Persistent data dir (`DATA_DIR`):** `lib/dataDir.ts` is the single
   place that decides where `catalog.json` + `users.json` live —
@@ -183,21 +181,59 @@ separate mini-phase; `lib/store.ts` / `lib/users.ts` are the seam).
   **REQUIRED before go-live** (`ADMIN_PASSWORD`, `USER_SESSION_SECRET`,
   `NEXT_PUBLIC_SITE_URL`).
 
+## Phase 4B — Postgres storage (Vercel) with file-mode fallback
+
+The two stores are **dual-mode**; every page and API works identically
+in both modes:
+
+- **`DATABASE_URL` set → Postgres mode.** `lib/db.ts` (drizzle-orm + the
+  `pg` driver) holds a lazy, process-wide pool. Tables are
+  document-style: `wd_titles` (`slug` PK, full Title object in a `doc`
+  JSONB column) and `wd_users` (`id` PK, unique `email`, full User
+  object in `doc`). Schema is created on first request
+  (`CREATE TABLE IF NOT EXISTS`); an empty titles table is **auto-seeded**
+  from the same bundled sample catalogue file mode uses. Uniqueness is
+  enforced by the database and violations are translated into the same
+  errors file mode produces. There is **no read cache** in DB mode —
+  reads are direct queries (deliberate: multiple serverless instances
+  must never serve stale lists).
+- **`DATABASE_URL` unset → file mode**, exactly as Phases 2–4
+  (`lib/store.ts` / `lib/users.ts` JSON implementation untouched).
+- **Switching modes** is just setting/unsetting `DATABASE_URL` and
+  restarting/redeploying. To move *existing* file data into the
+  database, run `npm run db:migrate` with `DATABASE_URL` set
+  (`scripts/migrate-to-db.mjs` — creates the tables, upserts all
+  titles + users, prints before/after counts and verifies read-back).
+- **`proxy.ts` in DB mode** can't read the catalogue file, so it fetches
+  the app's own `GET /api/public/slugs` (slug + episode numbers only)
+  with a ~30 s per-instance cache. Real 404s for unknown title/watch
+  URLs are preserved; a title added seconds ago can briefly 404 on an
+  instance holding a stale cache — its page itself reads the DB live.
+- **`/api/health`** reports `"storage": "postgres" | "file"` so you can
+  verify which mode a deployment is actually running.
+- **Vercel runbook:** DEPLOY.md Route B — create Neon Postgres in the
+  Vercel dashboard (which auto-adds `DATABASE_URL`), import
+  `Roktim003/watch-drama`, set `ADMIN_PASSWORD` / `USER_SESSION_SECRET`
+  / `NEXT_PUBLIC_SITE_URL`, deploy, verify `/api/health`.
+
 ## Known limitations
 
-- **JSON stores, single process:** fine for one server. Writes are
+- **File mode is single-process:** fine for one server. Writes are
   serialized in-process, but running multiple server instances against
-  the same files is NOT safe. For that, move the stores to a real
-  database (the `lib/store.ts` / `lib/users.ts` interfaces are the seam).
+  the same files is NOT safe — use Postgres mode (`DATABASE_URL`) for
+  that. In DB mode the JSONB-document schema trades normalized tables
+  (no SQL-side joins/filters on fields inside `doc`) for an identical
+  store interface in both modes; fine at this catalogue scale.
 - Viewer accounts (Phase 3): single shared JSON store, no email
   verification, no password reset, no social login, no per-session
   revocation (changing `USER_SESSION_SECRET`/`ADMIN_PASSWORD` logs all
   viewers out). Guest lists live in localStorage and only merge into an
   account in the browser where the guest data exists.
-- `proxy.ts` reads `catalog.json` (from `DATA_DIR` when set, else
-  `data/`) to return real 404s for unknown title/watch URLs (streamed
-  pages in Next 16 otherwise soft-404 with 200).
-- Deployment (Phase 4): single-container Docker / single server only —
-  the JSON stores are still single-process (see above), so don't scale
-  to multiple app instances behind a load balancer. No CSP header is
-  set by the app (reason documented in `next.config.ts` / DEPLOY.md).
+- `proxy.ts` returns real 404s for unknown title/watch URLs (streamed
+  pages in Next 16 otherwise soft-404 with 200): in file mode it reads
+  `catalog.json` (from `DATA_DIR` when set, else `data/`); in DB mode
+  it uses `/api/public/slugs` with a ~30 s cache (Phase 4B, above).
+- Deployment (Phase 4): Docker route is a single container in file
+  mode; the Vercel route (Phase 4B) is multi-instance-safe because the
+  stores live in Postgres. No CSP header is set by the app (reason
+  documented in `next.config.ts` / DEPLOY.md).
