@@ -1,6 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import {
+  fetchServerLists,
+  syncToggleRemote,
+  writeLocalBookings,
+} from "@/lib/clientLists";
 
 const KEY = "wd-booked";
 
@@ -15,15 +20,25 @@ export default function BookButton({
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    try {
-      const stored: Record<string, boolean> = JSON.parse(
-        localStorage.getItem(KEY) ?? "{}"
-      );
-      setBooked(!!stored[slug]);
-    } catch {
-      /* ignore */
-    }
-    setLoaded(true);
+    // Deferred to a microtask so state updates happen in a callback.
+    void Promise.resolve().then(() => {
+      try {
+        const stored: Record<string, boolean> = JSON.parse(
+          localStorage.getItem(KEY) ?? "{}"
+        );
+        setBooked(!!stored[slug]);
+      } catch {
+        /* ignore */
+      }
+      setLoaded(true);
+    });
+    // Phase 3: if logged in, the account's bookings are the source of truth.
+    void fetchServerLists().then((lists) => {
+      if (lists) {
+        writeLocalBookings(lists.bookings);
+        setBooked(lists.bookings.includes(slug));
+      }
+    });
   }, [slug]);
 
   function toggle() {
@@ -38,6 +53,7 @@ export default function BookButton({
     } catch {
       /* ignore */
     }
+    syncToggleRemote("bookings", slug); // 401s silently for guests
   }
 
   const count = baseCount + (booked ? 1 : 0);
