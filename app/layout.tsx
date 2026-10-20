@@ -1,11 +1,30 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
+import { siteUrl } from "@/lib/site";
+
+const SITE_DESCRIPTION =
+  "WatchDrama: Turkish drama, K-Drama, C-Drama, anime, movies and short dramas in HD.";
 
 export const metadata: Metadata = {
-  title: "WatchDrama — Watch Movies, Series & Dramas Online",
-  description:
-    "WatchDrama: Turkish drama, K-Drama, C-Drama, anime, movies and short dramas in HD.",
+  metadataBase: new URL(siteUrl()),
+  title: {
+    default: "WatchDrama — Watch Movies, Series & Dramas Online",
+    template: "%s — WatchDrama",
+  },
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    type: "website",
+    siteName: "WatchDrama",
+    url: "/",
+    title: "WatchDrama — Watch Movies, Series & Dramas Online",
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary",
+    title: "WatchDrama — Watch Movies, Series & Dramas Online",
+    description: SITE_DESCRIPTION,
+  },
 };
 
 export default function RootLayout({

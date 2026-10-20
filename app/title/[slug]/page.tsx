@@ -18,7 +18,21 @@ export async function generateMetadata({
 }) {
   const { slug } = await params;
   const title = await getStoredTitle(slug);
-  return { title: title ? `${title.name} — WatchDrama` : "Title — WatchDrama" };
+  if (!title) return { title: "Title" };
+  const description =
+    title.synopsis.length > 160 ? `${title.synopsis.slice(0, 157)}…` : title.synopsis;
+  const image = title.backdropUrl || title.posterUrl;
+  return {
+    title: title.name,
+    description,
+    openGraph: {
+      title: `${title.name} — WatchDrama`,
+      description,
+      url: `/title/${title.slug}`,
+      type: "video.other",
+      ...(image ? { images: [{ url: image }] } : {}),
+    },
+  };
 }
 
 export default async function TitlePage({

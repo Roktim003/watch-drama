@@ -1,0 +1,32 @@
+# WatchDrama — one-service production stack (Phase 4).
+#
+#   1. cp .env.example .env   and fill in the REQUIRED values
+#   2. docker compose up -d
+#   3. curl http://localhost:3000/api/health
+#
+# Full runbook: DEPLOY.md
+
+services:
+  watchdrama:
+    build:
+      context: .
+      args:
+        # Your real domain — baked into page metadata at build time.
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+    ports:
+      - "3000:3000"
+    env_file:
+      - path: .env
+        required: false # app still runs without it (dev defaults + warnings) — but set real secrets before go-live!
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      # Live catalogue + user data live on the named volume below, NOT
+      # inside the container, so they survive `docker compose up --build`.
+      DATA_DIR: /app/data-persist
+    volumes:
+      - watchdrama-data:/app/data-persist
+    restart: unless-stopped
+
+volumes:
+  watchdrama-data:

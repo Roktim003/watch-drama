@@ -141,6 +141,48 @@ An account is only for syncing personal lists across devices.
   Auth API: `POST /api/auth/signup` (201), `POST /api/auth/login`,
   `POST /api/auth/logout`, `GET /api/auth/me`.
 
+## Phase 4 — Deployment readiness
+
+The project now ships as a deploy-ready launch package. **The full
+runbook is [DEPLOY.md](./DEPLOY.md)** — Route A (VPS + Docker) works
+as-is; Route B (Vercel) does **not**, because serverless filesystems
+can't persist the JSON stores (a store-to-database migration would be a
+separate mini-phase; `lib/store.ts` / `lib/users.ts` are the seam).
+
+- **Persistent data dir (`DATA_DIR`):** `lib/dataDir.ts` is the single
+  place that decides where `catalog.json` + `users.json` live —
+  `$DATA_DIR` when set, `./data` otherwise (local dev unchanged). On
+  first run in a fresh `DATA_DIR`, the stores seed from the bundled
+  `data/` defaults shipped with the app. `proxy.ts` reads the same
+  location for its real-404 checks. In Docker, a named volume is mounted
+  at `/app/data-persist`, so data survives rebuilds/redeploys.
+- **Docker:** multi-stage `Dockerfile` (Node 22 Alpine; standalone Next
+  output; non-root user; `node server.js` on port 3000) +
+  `docker-compose.yml` (one service, `3000:3000`, `env_file`, named
+  volume, `restart: unless-stopped`) + `.dockerignore`.
+- **Health check:** `GET /api/health` (no auth) →
+  `{ ok, titles, users, uptime }` — counts only, no sensitive data.
+- **SEO:** real `/robots.txt` (allows public pages, disallows `/admin`
+  and `/api/`, points at the sitemap) and a dynamic `/sitemap.xml`
+  (home, every `/browse/<category>`, every `/title/<slug>` from the live
+  store). Unique per-page `<title>`/descriptions + Open Graph via
+  `NEXT_PUBLIC_SITE_URL` (see `.env.example`) and the root layout's title
+  template. Note: `robots.txt` is generated at build time, so set
+  `NEXT_PUBLIC_SITE_URL` **before** building (the compose file passes it
+  as a build argument).
+- **Security headers** on all responses (`next.config.ts`): `nosniff`,
+  `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy:
+  strict-origin-when-cross-origin`, `Permissions-Policy` with
+  camera/microphone/geolocation off. **No CSP on purpose:** hls.js loads
+  workers from `blob:` URLs and plays video from arbitrary hosts the
+  admin configures, so a generic CSP would break playback; add a
+  tailored one at the reverse proxy if your video hosts are fixed.
+- **Production safety:** if `ADMIN_PASSWORD` is unset in production, the
+  server logs a loud SECURITY WARNING at startup (`instrumentation.ts`)
+  on top of the admin banner. `.env.example` marks which variables are
+  **REQUIRED before go-live** (`ADMIN_PASSWORD`, `USER_SESSION_SECRET`,
+  `NEXT_PUBLIC_SITE_URL`).
+
 ## Known limitations
 
 - **JSON stores, single process:** fine for one server. Writes are
@@ -152,5 +194,10 @@ An account is only for syncing personal lists across devices.
   revocation (changing `USER_SESSION_SECRET`/`ADMIN_PASSWORD` logs all
   viewers out). Guest lists live in localStorage and only merge into an
   account in the browser where the guest data exists.
-- `proxy.ts` reads `data/catalog.json` to return real 404s for unknown
-  title/watch URLs (streamed pages in Next 16 otherwise soft-404 with 200).
+- `proxy.ts` reads `catalog.json` (from `DATA_DIR` when set, else
+  `data/`) to return real 404s for unknown title/watch URLs (streamed
+  pages in Next 16 otherwise soft-404 with 200).
+- Deployment (Phase 4): single-container Docker / single server only —
+  the JSON stores are still single-process (see above), so don't scale
+  to multiple app instances behind a load balancer. No CSP header is
+  set by the app (reason documented in `next.config.ts` / DEPLOY.md).

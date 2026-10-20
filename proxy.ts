@@ -69,15 +69,26 @@ function hasValidUserSession(request: NextRequest): boolean {
 // ── Real 404s for title/watch pages ─────────────────────────────────────────
 // With Cache Components (PPR), a notFound() thrown inside a streamed page
 // is served with HTTP 200. To give missing titles a true 404 status, the
-// proxy checks the slug against data/catalog.json up front and rewrites
+// proxy checks the slug against catalog.json up front and rewrites
 // unknown ones to an unmatched path (which Next serves as a real 404).
+//
+// The file location mirrors lib/dataDir.ts (Phase 4): $DATA_DIR when set,
+// otherwise ./data. Duplicated inline because the proxy runs outside the
+// app module graph — keep the two in sync.
+function catalogueFile(): string {
+  const env = process.env.DATA_DIR?.trim();
+  return env
+    ? path.join(path.resolve(env), "catalog.json")
+    : path.join(process.cwd(), "data", "catalog.json");
+}
+
 let slugCache: {
   mtimeMs: number;
   episodesBySlug: Map<string, Set<number>>;
 } | null = null;
 function catalogueIndex(): Map<string, Set<number>> | null {
   try {
-    const file = path.join(process.cwd(), "data", "catalog.json");
+    const file = catalogueFile();
     const stat = statSync(file);
     if (slugCache && slugCache.mtimeMs === stat.mtimeMs) return slugCache.episodesBySlug;
     const titles = JSON.parse(readFileSync(file, "utf8")) as Array<{

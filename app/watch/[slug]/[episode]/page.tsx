@@ -14,10 +14,16 @@ export async function generateMetadata({
 }) {
   const { slug, episode } = await params;
   const title = await getTitle(slug);
+  if (!title) return { title: "Watch" };
   return {
-    title: title
-      ? `Watch ${title.name} Episode ${episode} — WatchDrama`
-      : "Watch — WatchDrama",
+    title: `Watch ${title.name} Episode ${episode}`,
+    description: `Watch ${title.name} Episode ${episode} online in HD with subtitles on WatchDrama.`,
+    openGraph: {
+      title: `Watch ${title.name} Episode ${episode} — WatchDrama`,
+      description: title.synopsis,
+      url: `/watch/${title.slug}/${episode}`,
+      type: "video.episode",
+    },
   };
 }
 

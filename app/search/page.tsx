@@ -4,7 +4,10 @@ import { searchTitles } from "@/lib/catalog";
 import { getTitles } from "@/lib/store";
 import TitleCard from "@/components/TitleCard";
 
-export const metadata = { title: "Search — WatchDrama" };
+export const metadata = {
+  title: "Search",
+  description: "Search movies, series, Turkish dramas, K-Dramas, anime and short dramas on WatchDrama.",
+};
 
 export default function SearchPage({
   searchParams,

@@ -13,7 +13,16 @@ export async function generateMetadata({
 }) {
   const { category } = await params;
   const cat = getCategory(category);
-  return { title: cat ? `${cat.title} — WatchDrama` : "Browse — WatchDrama" };
+  if (!cat) return { title: "Browse" };
+  return {
+    title: cat.title,
+    description: `${cat.description} Watch ${cat.title} online in HD on WatchDrama.`,
+    openGraph: {
+      title: `${cat.title} — WatchDrama`,
+      description: cat.description,
+      url: `/browse/${cat.slug}`,
+    },
+  };
 }
 
 export default async function BrowsePage({

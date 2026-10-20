@@ -1,4 +1,17 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  // No title here → the root layout's default title is used.
+  description:
+    "Trending Turkish drama, K-Drama, C-Drama, anime, action movies and hot short dramas in HD — browse the rows, check what's coming soon, and pick up where you left off.",
+  openGraph: {
+    title: "WatchDrama — Watch Movies, Series & Dramas Online",
+    description:
+      "Trending Turkish drama, K-Drama, C-Drama, anime, movies and short dramas in HD.",
+    url: "/",
+  },
+};
 
 export const instant = false; // store-driven page: render per request
 import { connection } from "next/server";
